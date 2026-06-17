@@ -1,0 +1,564 @@
+{
+  "configVersion": 10,
+  "trip": {
+    "id": "dallas-mundial-2026",
+    "name": "Mundial 2026 — Dallas",
+    "shortName": "Dallas 2026",
+    "emoji": "🏟️",
+    "origin": "Hilton Richardson",
+    "destination": "AT&T Stadium",
+    "description": "Transporte público del Hilton Richardson al AT&T Stadium"
+  },
+  "city": {
+    "name": "Dallas, TX",
+    "lat": 32.82,
+    "lng": -96.85,
+    "zoom": 11,
+    "weatherLat": 32.78,
+    "weatherLng": -96.80,
+    "bbox": { "minLat": 32.5, "maxLat": 33.5, "minLng": -97.5, "maxLng": -96.5 },
+    "tileZooms": [8, 9, 10, 11, 12, 13, 14]
+  },
+  "stops": [
+    {
+      "id": 1, "emoji": "🏨", "name": "Hilton Richardson",
+      "lat": 32.9755, "lng": -96.7023, "type": "origin",
+      "instruction": "Punto de partida. Caminar ~12 min o Uber hasta Galatyn Park Station.",
+      "detail": "Dirección: 701 E Campbell Rd, Richardson TX 75081. Salir con tiempo: el DART sale cada ~15 min en horario normal."
+    },
+    {
+      "id": 2, "emoji": "🚉", "name": "Galatyn Park Station (DART)",
+      "lat": 32.9834, "lng": -96.7032, "type": "transit",
+      "instruction": "EMBARQUE. DART Red Line dirección SUR hacia Dallas.",
+      "detail": "Comprar ticket GoPass app o máquina en estación antes de subir. DART Day Pass $6 o TRE Regional Day Pass $9. Validar antes del primer paso en el andén."
+    },
+    {
+      "id": 3, "emoji": "🔄", "name": "Victory Station (DART→TRE)",
+      "lat": 32.7890, "lng": -96.8143, "type": "transfer",
+      "instruction": "TRASBORDO. Bajar del DART, subir al TRE dirección Fort Worth.",
+      "detail": "IMPORTANTE: el TRE sale del mismo complejo pero de andén diferente. Seguir señales TRE / Trinity Railway Express. Espera típica: 10-20 min."
+    },
+    {
+      "id": 4, "emoji": "🚂", "name": "Market Center Station (TRE)",
+      "lat": 32.8036, "lng": -96.8386, "type": "intermediate",
+      "instruction": "NO bajar. Parada intermedia.",
+      "detail": "Permanecer en el tren. Primera parada después de Victory. El tren sigue hacia Arlington."
+    },
+    {
+      "id": 5, "emoji": "🚂", "name": "Downtown Irving/Heritage (TRE)",
+      "lat": 32.8206, "lng": -96.9464, "type": "intermediate",
+      "instruction": "NO bajar. Parada intermedia.",
+      "detail": "Permanecer en el tren. Zona de Irving. A mitad de camino hacia CentrePort."
+    },
+    {
+      "id": 6, "emoji": "🚂", "name": "West Irving Station (TRE)",
+      "lat": 32.8277, "lng": -97.0023, "type": "intermediate",
+      "instruction": "NO bajar. Parada intermedia.",
+      "detail": "Casi llegando. Próxima parada es CentrePort/DFW. Prepararse para bajar."
+    },
+    {
+      "id": 7, "emoji": "🏁", "name": "CentrePort/DFW Airport (TRE)",
+      "lat": 32.8547, "lng": -97.0459, "type": "critical",
+      "instruction": "⚠️ BAJAR AQUÍ. Tomar bus charter (ticket evento) o rideshare al estadio.",
+      "detail": "Bus charter gratuito para portadores de ticket oficial. Sale desde la parada frente a la estación. Si no hay charter disponible: Uber/Lyft ~$15-20."
+    },
+    {
+      "id": 8, "emoji": "🏟️", "name": "AT&T Stadium",
+      "lat": 32.7480, "lng": -97.0928, "type": "destination",
+      "instruction": "DESTINO. ~10 min en bus charter desde CentrePort.",
+      "detail": "¡Llegaron al AT&T Stadium! Ingresar con ticket digital. Puertas abren 2 horas antes. Hay múltiples entradas: Gate A, B, C, D."
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "name": "Argentina vs Austria",
+      "emoji": "⚽",
+      "date": "2026-06-22T17:00:00Z",
+      "label": "22 jun · 12:00h Dallas",
+      "routeColor": "#3b82f6",
+      "stops": [
+        { "id": 1, "emoji": "🏨", "name": "Hilton Richardson", "lat": 32.9755, "lng": -96.7023, "type": "origin", "instruction": "Salida para Argentina vs Austria (22/6). Caminar ~12 min o Uber hasta Galatyn Park." },
+        { "id": 2, "emoji": "🚉", "name": "Galatyn Park Station (DART)", "lat": 32.9834, "lng": -96.7032, "type": "transit", "instruction": "EMBARQUE DART Red Line dirección SUR. Salida recomendada: 08:00h para llegar con margen al partido 12:00h." },
+        { "id": 3, "emoji": "🔄", "name": "Victory Station (DART→TRE)", "lat": 32.7890, "lng": -96.8143, "type": "transfer", "instruction": "TRASBORDO al TRE dirección Fort Worth. Espera ~15 min. Es lunes, menor flujo de pasajeros." },
+        { "id": 4, "emoji": "🚂", "name": "Market Center Station (TRE)", "lat": 32.8036, "lng": -96.8386, "type": "intermediate", "instruction": "NO bajar. Primera parada TRE, seguir hacia Arlington." },
+        { "id": 5, "emoji": "🚂", "name": "Downtown Irving/Heritage (TRE)", "lat": 32.8206, "lng": -96.9464, "type": "intermediate", "instruction": "NO bajar. Parada intermedia en Irving." },
+        { "id": 6, "emoji": "🚂", "name": "West Irving Station (TRE)", "lat": 32.8277, "lng": -97.0023, "type": "intermediate", "instruction": "NO bajar. Prepararse para bajar en la próxima." },
+        { "id": 7, "emoji": "🏁", "name": "CentrePort/DFW Airport (TRE)", "lat": 32.8547, "lng": -97.0459, "type": "critical", "instruction": "⚠️ BAJAR AQUÍ. Bus charter gratuito con ticket oficial → AT&T Stadium (~10 min)." },
+        { "id": 8, "emoji": "🏟️", "name": "AT&T Stadium", "lat": 32.7480, "lng": -97.0928, "type": "destination", "instruction": "¡Llegaron! Puertas abren 10:00h (2h antes). Argentina vs Austria — ¡Arriba Argentina! 🇦🇷" }
+      ],
+      "schedule": {
+        "note": "Partido el lunes 22 de junio a las 12:00h hora Dallas. Salí del hotel ~3.5h antes para llegar cómodo.",
+        "columns": ["Salida Hotel", "Galatyn Park (DART)", "Victory Station (TRE)", "CentrePort/DFW", "AT&T Stadium"],
+        "rows": [
+          { "cells": ["07:30h", "07:42h", "08:20h", "08:50h", "09:10h"], "highlight": false },
+          { "cells": ["08:00h", "08:12h", "08:50h", "09:20h", "09:40h"], "highlight": true },
+          { "cells": ["08:30h", "08:42h", "09:20h", "09:50h", "10:10h"], "highlight": false },
+          { "cells": ["09:00h", "09:12h", "09:50h", "10:20h", "10:40h"], "highlight": false }
+        ],
+        "tips": [
+          "⭐ Salida recomendada 08:00h — llegan con ~2h de margen al partido de 12:00h.",
+          "🌅 Partido de mañana: ojo con desayunar rápido y salir temprano.",
+          "🎟 Comprá el TRE Regional Day Pass ($9) antes de salir — cubre ida y vuelta.",
+          "🔄 En Victory Station: bajar del DART y buscar el andén del TRE (Trinity Railway Express).",
+          "🚌 En CentrePort: el bus charter sale directo al AT&T Stadium con ticket oficial.",
+          "🔁 Vuelta: el TRE especial post-partido sale ~20 min después del pitazo final."
+        ]
+      },
+      "transport": {
+        "estimatedTransitMin": 75,
+        "estimatedTransitCost": "USD $9.00",
+        "transitSteps": [
+          { "mode": "walk",  "label": "Caminar/Uber → Galatyn Park Station", "durationMin": 12 },
+          { "mode": "metro", "label": "DART Red Line → Victory Station",      "durationMin": 35 },
+          { "mode": "wait",  "label": "Espera TRE en Victory",                "durationMin": 15 },
+          { "mode": "train", "label": "TRE → CentrePort/DFW Airport",         "durationMin": 30 },
+          { "mode": "bus",   "label": "Bus charter → AT&T Stadium",            "durationMin": 10 }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "name": "Argentina vs Jordania",
+      "emoji": "⚽",
+      "date": "2026-06-28T02:00:00Z",
+      "label": "27 jun · 21:00h Dallas",
+      "origin": "Marriott Las Colinas",
+      "destination": "AT&T Stadium",
+      "routeColor": "#8b5cf6",
+      "stops": [
+        { "id": 1, "emoji": "🏨", "name": "Marriott Las Colinas", "lat": 32.8683, "lng": -96.9543, "type": "origin", "instruction": "Punto de partida. Caminar ~10-15 min o Uber 3-5 min hasta Irving Convention Center Station." },
+        { "id": 2, "emoji": "🚉", "name": "Irving Convention Center Station (DART)", "lat": 32.8628, "lng": -96.9564, "type": "transit", "instruction": "EMBARQUE. DART Orange Line dirección DOWNTOWN DALLAS. No hace falta cambiar de tren. Salida recomendada 17:00h para partido de 21:00h." },
+        { "id": 3, "emoji": "🔄", "name": "Victory Station (DART→TRE)", "lat": 32.7890, "lng": -96.8143, "type": "transfer", "instruction": "TRASBORDO. Bajar de la Orange Line y subir al TRE dirección Fort Worth. Es sábado: más turistas, llegar con margen al andén." },
+        { "id": 4, "emoji": "🏁", "name": "CentrePort/DFW Airport (TRE)", "lat": 32.8547, "lng": -97.0459, "type": "critical", "instruction": "⚠️ BAJAR AQUÍ. Bus charter FIFA gratuito para portadores de ticket oficial → AT&T Stadium (~15-25 min)." },
+        { "id": 5, "emoji": "🏟️", "name": "AT&T Stadium", "lat": 32.7480, "lng": -97.0928, "type": "destination", "instruction": "¡Llegaron! Partido a las 21:00h. Puertas abren 19:00h (2h antes). Argentina vs Jordania 🇦🇷🆚🇯🇴" }
+      ],
+      "schedule": {
+        "note": "Partido el sábado 27 de junio a las 21:00h hora Dallas. Ruta desde Marriott Las Colinas con DART Orange Line.",
+        "columns": ["Salida Hotel", "Irving Conv. Ctr (Orange)", "Victory Station (TRE)", "CentrePort/DFW", "AT&T Stadium"],
+        "rows": [
+          { "cells": ["16:30h", "16:45h", "17:10h", "17:35h", "18:00h"], "highlight": false },
+          { "cells": ["17:00h", "17:15h", "17:40h", "18:05h", "18:30h"], "highlight": true },
+          { "cells": ["17:30h", "17:45h", "18:10h", "18:35h", "19:00h"], "highlight": false }
+        ],
+        "tips": [
+          "⭐ Salida recomendada 17:00h — llegan con ~2.5h de margen al partido de 21:00h.",
+          "🌆 Partido nocturno: buen momento para cenar algo antes de salir del hotel.",
+          "🚶 Del Marriott Las Colinas a Irving Convention Center Station: ~10-15 min caminando.",
+          "🟠 Tomar DART Orange Line dirección Downtown Dallas — bajar directo en Victory Station (sin trasbordos).",
+          "🔄 En Victory Station: trasbordo al TRE dirección Fort Worth. Es sábado: más gente, llegar con tiempo al andén.",
+          "🎟 Comprar TRE Regional Day Pass ($9) en la app GoPass antes de salir — cubre Orange Line + TRE ida y vuelta.",
+          "🚌 Bus charter FIFA gratuito desde CentrePort para portadores de ticket oficial del partido.",
+          "⚠️ Partido nocturno de sábado = mucha gente. Salir del hotel al menos 4 horas antes."
+        ]
+      },
+      "transport": {
+        "estimatedTransitMin": 98,
+        "estimatedTransitCost": "USD $9.00",
+        "transitSteps": [
+          { "mode": "walk",  "label": "Caminar → Irving Convention Center Station", "durationMin": 13 },
+          { "mode": "metro", "label": "DART Orange Line → Victory Station",          "durationMin": 23 },
+          { "mode": "wait",  "label": "Espera TRE en Victory",                       "durationMin": 15 },
+          { "mode": "train", "label": "TRE → CentrePort/DFW Airport",                "durationMin": 27 },
+          { "mode": "bus",   "label": "Bus FIFA → AT&T Stadium",                     "durationMin": 20 }
+        ]
+      }
+    }
+  ],
+  "checklist": [
+    "Tickets del evento (app o impreso)",
+    "Celular cargado al 100%",
+    "App GoPass instalada y con saldo cargado",
+    "Agua (mínimo 1 litro por persona)",
+    "Protector solar FPS 50+",
+    "Documentos: pasaporte o DNI",
+    "Efectivo USD (propina, emergencias)",
+    "Cargador portátil (power bank)",
+    "Auriculares",
+    "Snacks para el viaje",
+    "Esta app instalada offline en el celular",
+    "Screenshot de la ruta (por si no hay internet)"
+  ],
+  "schedules": [
+    {
+      "title": "🟦 Ida: Victory Station → CentrePort",
+      "note": "Frecuencia: cada 30 min en días de partido. Recomendado: llegar al estadio 90 min antes del partido.",
+      "columns": ["Salida Victory", "Llegada CentrePort", ""],
+      "rows": [
+        { "cells": ["10:30", "11:05", "⭐ Sugerido"], "highlight": true },
+        { "cells": ["11:00", "11:35", ""], "highlight": false },
+        { "cells": ["11:30", "12:05", ""], "highlight": false },
+        { "cells": ["12:00", "12:35", ""], "highlight": false },
+        { "cells": ["12:30", "13:05", ""], "highlight": false },
+        { "cells": ["13:00", "13:35", ""], "highlight": false },
+        { "cells": ["13:30", "14:05", ""], "highlight": false }
+      ]
+    },
+    {
+      "title": "🔄 Vuelta: CentrePort → Victory Station",
+      "note": "",
+      "columns": ["Salida CentrePort", "Llegada Victory", ""],
+      "rows": [
+        { "cells": ["17:30", "18:05", "Post evento"], "highlight": false },
+        { "cells": ["18:00", "18:35", ""], "highlight": false },
+        { "cells": ["18:30", "19:05", ""], "highlight": false },
+        { "cells": ["19:00", "19:35", ""], "highlight": false },
+        { "cells": ["19:30", "20:05", "⭐ Recomendado"], "highlight": true },
+        { "cells": ["20:00", "20:35", ""], "highlight": false }
+      ]
+    }
+  ],
+  "transport": {
+    "estimatedTransitMin": 75,
+    "estimatedTransitCost": "USD $9.00",
+    "transitSteps": [
+      { "mode": "walk",   "label": "Caminar/Uber → Galatyn Park Station", "durationMin": 12 },
+      { "mode": "metro",  "label": "DART Red Line → Victory Station",      "durationMin": 35 },
+      { "mode": "wait",   "label": "Espera conexión TRE en Victory",       "durationMin": 15 },
+      { "mode": "train",  "label": "TRE → CentrePort/DFW Airport",         "durationMin": 30 },
+      { "mode": "bus",    "label": "Bus charter → AT&T Stadium",            "durationMin": 10 }
+    ]
+  },
+  "alerts": [
+    {
+      "id": 1,
+      "type": "info",
+      "title": "Servicio especial días de partido",
+      "message": "El TRE opera con frecuencia aumentada (cada 15 min) los días de partido del Mundial. Validar ticket GoPass antes de subir al andén.",
+      "active": true
+    }
+  ],
+  "transit": {
+    "sectionTitle": "🎟 Tickets GoPass",
+    "warning": "⚠️ Comprar ANTES de subir al tren. No hay venta a bordo ni en algunas estaciones. Tener la app instalada antes de llegar.",
+    "tickets": [
+      {
+        "name": "DART Day Pass — $6.00",
+        "description": "Cubre el tramo en DART Red Line: Galatyn Park → Victory Station. Válido todo el día en DART.",
+        "recommended": false
+      },
+      {
+        "name": "TRE Regional Day Pass — $9.00",
+        "description": "Cubre el tramo en TRE: Victory Station → CentrePort/DFW Airport. También incluye DART.",
+        "recommended": false
+      },
+      {
+        "name": "💡 Recomendación del grupo",
+        "description": "Comprar el TRE Regional Day Pass ($9) — cubre AMBOS tramos ida y vuelta con un solo ticket. La opción más simple.",
+        "recommended": true
+      }
+    ],
+    "appStore": "https://apps.apple.com/us/app/gopass/id490474238",
+    "googlePlay": "https://play.google.com/store/apps/details?id=com.ridescout.android.gopass",
+    "note": "🚌 Bus charter gratuito desde CentrePort para portadores de ticket oficial del partido."
+  },
+  "poi": {
+    "tourist": [
+      {
+        "lat": 32.7801, "lng": -96.8005,
+        "name": "Giant Eyeball",
+        "emoji": "👁",
+        "category": "landmark",
+        "description": "Escultura gigante de un ojo de 10 metros de altura en el centro de Dallas. Una de las esculturas más fotografiadas de Texas. Arte público único frente al edificio Chase Tower en Main Street.",
+        "howToGet": "Desde Victory Station: 8 min a pie. En Main Street frente a Chase Tower.",
+        "wikiTitle": "Eye_(Dallas_sculpture)"
+      },
+      {
+        "lat": 32.7792, "lng": -96.8073,
+        "name": "Monumento JFK",
+        "emoji": "🕊",
+        "category": "historic",
+        "description": "Monumento conmemorativo de John Fitzgerald Kennedy, diseñado por Philip Johnson en 1970. Estructura de concreto abierta que simboliza la libertad. A una cuadra de Dealey Plaza.",
+        "howToGet": "Desde Victory Station / West End Station: 10 min a pie.",
+        "wikiTitle": "John_F._Kennedy_Memorial_Plaza"
+      },
+      {
+        "lat": 32.7808, "lng": -96.8090,
+        "name": "Plaza Dealey",
+        "emoji": "🏛",
+        "category": "historic",
+        "description": "La plaza donde fue asesinado el presidente John F. Kennedy el 22 de noviembre de 1963. Patrimonio histórico nacional de EE.UU. Incluye el Texas School Book Depository (Sixth Floor Museum) y la famosa cuesta de hierba.",
+        "howToGet": "Desde West End Station (DART): 5 min a pie. Desde Victory Station: 12 min a pie.",
+        "wikiTitle": "Dealey_Plaza"
+      },
+      {
+        "lat": 32.7862, "lng": -96.8004,
+        "name": "AT&T Discovery District",
+        "emoji": "🏢",
+        "category": "landmark",
+        "description": "Campus urbano de AT&T reconvertido en espacio público en el corazón de Dallas. Pantallas LED gigantes, restaurantes, arte urbano y eventos al aire libre. También cerca del estadio AT&T para eventos especiales.",
+        "howToGet": "Desde Victory Station: 12 min a pie. En el centro de Dallas.",
+        "wikiTitle": "AT%26T_Discovery_District"
+      },
+      {
+        "lat": 32.7882, "lng": -96.8022,
+        "name": "Klyde Warren Park",
+        "emoji": "🌳",
+        "category": "park",
+        "description": "Parque urbano de 5 acres construido sobre la autopista Woodall Rodgers. Food trucks, eventos al aire libre, yoga, zona de juegos y espacio cultural. Muy popular entre los locales.",
+        "howToGet": "Desde Victory Station: 12 min a pie o Uber ~$5.",
+        "wikiTitle": "Klyde_Warren_Park"
+      },
+      {
+        "lat": 32.7882, "lng": -96.8022,
+        "name": "🇦🇷 Banderazo — Dom 21 jun · 17:00hs",
+        "emoji": "🇦🇷",
+        "category": "banderazo",
+        "date": "2026-06-21T22:00:00Z",
+        "dateLabel": "Domingo 21 de junio · 17:00hs (hora Dallas)",
+        "description": "Banderazo de hinchas argentinos en Klyde Warren Park, corazón del centro de Dallas. Punto de encuentro de la parcialidad argentina antes del debut ante Austria. ¡A llenar el parque de celeste y blanco!",
+        "howToGet": "Desde Victory Station: 12 min a pie o Uber ~$5. En el centro de Dallas frente al Nasher Sculpture Center.",
+        "wikiTitle": "Klyde_Warren_Park"
+      },
+      {
+        "lat": 32.7882, "lng": -96.8022,
+        "name": "🇦🇷 Banderazo — Lun 22 jun · 12:00hs",
+        "emoji": "🇦🇷",
+        "category": "banderazo",
+        "date": "2026-06-22T17:00:00Z",
+        "dateLabel": "Lunes 22 de junio · 12:00hs (hora Dallas)",
+        "description": "Banderazo argentino en Klyde Warren Park, DÍA DEL PARTIDO vs Austria. Concentración previa al partido de las 12:00hs. El parque se convierte en una fiesta celeste y blanca antes de ir al AT&T Stadium.",
+        "howToGet": "Desde Victory Station: 12 min a pie o Uber ~$5. Llegar temprano — va a estar lleno de hinchas argentinos.",
+        "wikiTitle": "Klyde_Warren_Park"
+      },
+      {
+        "lat": 32.7882, "lng": -96.8022,
+        "name": "🇦🇷 Banderazo — Vie 26 jun · 18:00hs",
+        "emoji": "🇦🇷",
+        "category": "banderazo",
+        "date": "2026-06-26T23:00:00Z",
+        "dateLabel": "Viernes 26 de junio · 18:00hs (hora Dallas)",
+        "description": "Banderazo argentino en Klyde Warren Park, día previo al partido vs Jordania (sábado 27). Último banderazo antes de la tercera fecha del grupo. ¡La previa de la clasificación!",
+        "howToGet": "Desde Victory Station: 12 min a pie o Uber ~$5.",
+        "wikiTitle": "Klyde_Warren_Park"
+      },
+      {
+        "lat": 32.7897, "lng": -97.3479,
+        "name": "Fort Worth Stockyards",
+        "emoji": "🤠",
+        "category": "historic",
+        "description": "Mercado histórico de ganado del siglo XIX convertido en atracción turística de clase mundial. Rodeos diarios, música country en vivo, restaurantes de BBQ texano y tiendas de vaquero. ¡El Texas más auténtico!",
+        "howToGet": "Desde Fort Worth ITC (TRE): 15 min en Uber (~$10). Desde AT&T Stadium: 20 min en Uber (~$15).",
+        "wikiTitle": "Fort_Worth_Stockyards"
+      },
+      {
+        "lat": 32.7354, "lng": -96.2749,
+        "name": "Buc-ee's (Terrell)",
+        "emoji": "🦫",
+        "category": "shopping",
+        "description": "El legendario Buc-ee's de Texas: estación de servicio gigante famosa en todo el mundo. Combustible barato, snacks texanos únicos (beaver nuggets, brisket), baños premiados como los más limpios de EE.UU. Experiencia obligada en Texas.",
+        "howToGet": "~30 min al este de Dallas por I-20 East. Solo en auto o Uber (~$35 desde Dallas). Abierto 24hs.",
+        "wikiTitle": "Buc-ee's"
+      },
+      {
+        "lat": 33.2264, "lng": -97.1407,
+        "name": "Buc-ee's (Denton)",
+        "emoji": "🦫",
+        "category": "shopping",
+        "description": "Buc-ee's gigante al norte de Dallas sobre I-35E. Snacks texanos únicos, combustible barato y baños impecables. Ideal de paso si viajan hacia el norte o regresan de Oklahoma.",
+        "howToGet": "~40 min al norte de Dallas por I-35E. Solo en auto o Uber. Abierto 24hs.",
+        "wikiTitle": "Buc-ee's"
+      },
+      {
+        "lat": 32.3879, "lng": -96.8563,
+        "name": "Buc-ee's (Waxahachie)",
+        "emoji": "🦫",
+        "category": "shopping",
+        "description": "Buc-ee's al sur de Dallas sobre I-35E. Uno de los más grandes de Texas. Perfecto para parar de camino si viajan hacia Austin o San Antonio. Famoso por su brisket y beaver nuggets.",
+        "howToGet": "~35 min al sur de Dallas por I-35E South. Solo en auto o Uber. Abierto 24hs.",
+        "wikiTitle": "Buc-ee's"
+      },
+      {
+        "lat": 33.2880, "lng": -96.5725,
+        "name": "Buc-ee's (Melissa)",
+        "emoji": "🦫",
+        "category": "shopping",
+        "description": "Buc-ee's al norte de Dallas sobre US-75. Ideal para los hospedados en Richardson o Plano — es el más cercano de todos. Mismo surtido épico: snacks, ropa, combustible y los baños más limpios de Texas.",
+        "howToGet": "~35 min al norte de Dallas/Richardson por US-75 North. Solo en auto o Uber. Abierto 24hs.",
+        "wikiTitle": "Buc-ee's"
+      },
+      {
+        "lat": 31.9847, "lng": -97.0989,
+        "name": "Buc-ee's (Hillsboro)",
+        "emoji": "🦫",
+        "category": "shopping",
+        "description": "Buc-ee's sobre I-35W al sur de Fort Worth. Perfecto para los que vienen desde Fort Worth o van rumbo a Waco. Uno de los más activos de la cadena por el tráfico de I-35.",
+        "howToGet": "~55 min al sur de Fort Worth por I-35W South. Solo en auto o Uber. Abierto 24hs.",
+        "wikiTitle": "Buc-ee's"
+      },
+      {
+        "lat": 32.9694, "lng": -96.3327,
+        "name": "Buc-ee's (Royse City)",
+        "emoji": "🦫",
+        "category": "shopping",
+        "description": "El Buc-ee's más nuevo del área DFW, sobre I-30 al este de Dallas. Moderno, amplio y menos concurrido que los otros. Ideal de paso si van hacia Tyler o el este de Texas.",
+        "howToGet": "~35 min al este de Dallas por I-30 East. Solo en auto o Uber. Abierto 24hs.",
+        "wikiTitle": "Buc-ee's"
+      }
+    ],
+    "stations": [
+      {
+        "lat": 32.9619, "lng": -96.7028,
+        "name": "Arapaho Center Station",
+        "emoji": "🚇",
+        "line": "DART Red Line",
+        "type": "dart",
+        "description": "Estación DART Red Line en Richardson. Conexión con buses locales. Parking disponible.",
+        "connections": "Buses: 202, 205"
+      },
+      {
+        "lat": 32.9426, "lng": -96.7017,
+        "name": "Spring Valley Station",
+        "emoji": "🚇",
+        "line": "DART Red Line",
+        "type": "dart",
+        "description": "Estación DART Red Line en Richardson. Park & Ride con estacionamiento gratuito.",
+        "connections": "Buses: 202"
+      },
+      {
+        "lat": 32.9131, "lng": -96.7017,
+        "name": "LBJ/Central Station",
+        "emoji": "🚇",
+        "line": "DART Red Line",
+        "type": "dart",
+        "description": "Estación DART al sur de Richardson. Cerca del corredor LBJ Freeway.",
+        "connections": "Buses: 202, 208"
+      },
+      {
+        "lat": 32.9023, "lng": -96.7015,
+        "name": "Forest Lane Station",
+        "emoji": "🚇",
+        "line": "DART Red Line",
+        "type": "dart",
+        "description": "Estación DART en el norte de Dallas. Parking disponible.",
+        "connections": "Buses locales"
+      },
+      {
+        "lat": 32.8651, "lng": -96.7259,
+        "name": "Lake Highlands Station",
+        "emoji": "🚇",
+        "line": "DART Red Line",
+        "type": "dart",
+        "description": "Estación DART en el barrio Lake Highlands de Dallas.",
+        "connections": "Buses: 412"
+      },
+      {
+        "lat": 32.8456, "lng": -96.7392,
+        "name": "White Rock Station",
+        "emoji": "🚇",
+        "line": "DART Red Line",
+        "type": "dart",
+        "description": "Cerca del Lago White Rock. Ideal para visitar el parque y lago.",
+        "connections": "Buses: 60"
+      },
+      {
+        "lat": 32.8357, "lng": -96.7760,
+        "name": "Mockingbird Station",
+        "emoji": "🚇",
+        "line": "DART Red Line",
+        "type": "dart",
+        "description": "Estación multimodal con centro comercial, cines, restaurantes y el Inwood Theatre. Cercana a SMU y Love Field.",
+        "connections": "Buses: 24, 25, 36"
+      },
+      {
+        "lat": 32.8476, "lng": -96.8264,
+        "name": "Inwood/Love Field Station",
+        "emoji": "🚇",
+        "line": "DART Red Line",
+        "type": "dart",
+        "description": "Acceso al Aeropuerto Love Field (vuelos domésticos Southwest). Útil para llegar/salir de Dallas sin Uber.",
+        "connections": "Buses: 36, 408 → Love Field Airport"
+      },
+      {
+        "lat": 32.7876, "lng": -96.7970,
+        "name": "Pearl/Arts District Station",
+        "emoji": "🚇",
+        "line": "DART Red / Blue / Green Line",
+        "type": "dart",
+        "description": "Centro del Distrito de las Artes de Dallas. A pasos del Dallas Museum of Art, Nasher Sculpture Center y AT&T Performing Arts Center.",
+        "connections": "Transfer Red/Blue/Green Lines"
+      },
+      {
+        "lat": 32.7801, "lng": -96.8061,
+        "name": "West End Station",
+        "emoji": "🚇",
+        "line": "DART Red / Blue / Green Line",
+        "type": "dart",
+        "description": "Estación en el histórico West End de Dallas. Cerca de Dealey Plaza, JFK Memorial y Dallas World Aquarium. Zona turística principal.",
+        "connections": "Transfer Red/Blue/Green Lines. Cercano a Dealey Plaza."
+      },
+      {
+        "lat": 32.7780, "lng": -96.7990,
+        "name": "Akard Station",
+        "emoji": "🚇",
+        "line": "DART Red / Blue / Green Line",
+        "type": "dart",
+        "description": "Centro de Dallas. Cerca de la zona financiera, hoteles y restaurantes del downtown.",
+        "connections": "Transfer Red/Blue/Green Lines"
+      },
+      {
+        "lat": 32.7764, "lng": -96.7945,
+        "name": "St. Paul Station",
+        "emoji": "🚇",
+        "line": "DART Red / Blue / Green Line",
+        "type": "dart",
+        "description": "Cerca del Convention Center de Dallas y el Giant Eyeball en Main Street.",
+        "connections": "Buses: 3, 30"
+      },
+      {
+        "lat": 32.8030, "lng": -96.7990,
+        "name": "CityPlace/Uptown Station",
+        "emoji": "🚇",
+        "line": "DART Red / Blue / Green Line",
+        "type": "dart",
+        "description": "Barrio Uptown de Dallas: restaurantes, bares y vida nocturna. Una de las zonas más animadas de la ciudad.",
+        "connections": "Transfer Red/Blue/Green Lines"
+      },
+      {
+        "lat": 32.7726, "lng": -96.8701,
+        "name": "Westmoreland Station (TRE)",
+        "emoji": "🚂",
+        "line": "TRE Trinity Railway Express",
+        "type": "tre",
+        "description": "Primera parada TRE después de Victory hacia Fort Worth. Zona residencial oeste de Dallas.",
+        "connections": "TRE Fort Worth direction"
+      },
+      {
+        "lat": 32.7726, "lng": -96.9082,
+        "name": "Hampton Station (TRE)",
+        "emoji": "🚂",
+        "line": "TRE Trinity Railway Express",
+        "type": "tre",
+        "description": "Estación TRE en el área oeste de Dallas. Parking disponible.",
+        "connections": "TRE Fort Worth direction"
+      },
+      {
+        "lat": 32.8732, "lng": -97.2270,
+        "name": "Richland Hills Station (TRE)",
+        "emoji": "🚂",
+        "line": "TRE Trinity Railway Express",
+        "type": "tre",
+        "description": "Estación TRE en Richland Hills. Parking gratuito. Alternativa para entrar a Fort Worth.",
+        "connections": "TRE Fort Worth / Dallas directions"
+      },
+      {
+        "lat": 32.7532, "lng": -97.3291,
+        "name": "Fort Worth ITC (TRE)",
+        "emoji": "🚂",
+        "line": "TRE Trinity Railway Express",
+        "type": "tre",
+        "description": "Terminal del TRE en Fort Worth (Intermodal Transportation Center). Conexión con buses de Fort Worth y acceso al centro histórico de Cowtown. A 20 min de los Stockyards.",
+        "connections": "Buses locales Fort Worth, Amtrak"
+      },
+      {
+        "lat": 32.7353, "lng": -97.2879,
+        "name": "Bell Station (TRE)",
+        "emoji": "🚂",
+        "line": "TRE Trinity Railway Express",
+        "type": "tre",
+        "description": "Estación TRE en el este de Fort Worth. Parking disponible.",
+        "connections": "TRE Dallas / Fort Worth directions"
+      }
+    ]
+  }
+}

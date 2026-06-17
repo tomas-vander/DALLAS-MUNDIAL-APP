@@ -1,0 +1,117 @@
+{
+  "_readme": "Plantilla base para crear tu propio viaje. Editá los campos y cargá el archivo desde el tab Config.",
+  "trip": {
+    "id": "mi-viaje-id",
+    "name": "Nombre del Viaje",
+    "shortName": "Mi Viaje",
+    "emoji": "🗺️",
+    "origin": "Punto de partida",
+    "destination": "Destino final",
+    "description": "Descripción breve del recorrido"
+  },
+  "city": {
+    "name": "Nombre de la ciudad",
+    "lat": 0.0,
+    "lng": 0.0,
+    "zoom": 13,
+    "weatherLat": 0.0,
+    "weatherLng": 0.0,
+    "bbox": { "minLat": -0.5, "maxLat": 0.5, "minLng": -0.5, "maxLng": 0.5 },
+    "tileZooms": [11, 12, 13]
+  },
+  "stops": [
+    {
+      "id": 1,
+      "emoji": "🏠",
+      "name": "Punto de partida",
+      "lat": 0.0,
+      "lng": 0.0,
+      "type": "origin",
+      "instruction": "Instrucción breve visible en la lista.",
+      "detail": "Detalle completo que aparece al expandir la parada."
+    },
+    {
+      "id": 2,
+      "emoji": "🚉",
+      "name": "Estación de transporte",
+      "lat": 0.005,
+      "lng": 0.005,
+      "type": "transit",
+      "instruction": "EMBARQUE en [línea/bus].",
+      "detail": "Información sobre el ticket y cómo validarlo."
+    },
+    {
+      "id": 3,
+      "emoji": "🎯",
+      "name": "Destino final",
+      "lat": 0.01,
+      "lng": 0.01,
+      "type": "destination",
+      "instruction": "¡Llegaste!",
+      "detail": "Información sobre el destino. Horarios de entrada, accesos, etc."
+    }
+  ],
+  "_stopTypes": ["origin", "transit", "transfer", "intermediate", "critical", "destination"],
+  "events": [
+    {
+      "id": 1,
+      "name": "Nombre del evento",
+      "emoji": "🎉",
+      "date": "2026-12-31T20:00:00Z",
+      "label": "31 dic · 17:00h"
+    }
+  ],
+  "checklist": [
+    "Entrada al evento",
+    "Celular cargado",
+    "Ticket de transporte",
+    "Documentos",
+    "Dinero en efectivo",
+    "Esta app offline"
+  ],
+  "schedules": [
+    {
+      "title": "🟦 Horario de ida",
+      "note": "Frecuencia y notas sobre el servicio.",
+      "columns": ["Salida", "Llegada", "Observación"],
+      "rows": [
+        { "cells": ["08:00", "08:30", "⭐ Recomendado"], "highlight": true },
+        { "cells": ["08:30", "09:00", ""], "highlight": false }
+      ]
+    }
+  ],
+  "transport": {
+    "estimatedTransitMin": 30,
+    "estimatedTransitCost": "$0.00",
+    "transitSteps": [
+      { "mode": "walk",    "label": "Caminar a la parada",      "durationMin": 5  },
+      { "mode": "transit", "label": "Transporte público",        "durationMin": 20 },
+      { "mode": "walk",    "label": "Caminar al destino",        "durationMin": 5  }
+    ]
+  },
+  "_modeValues": ["walk", "metro", "train", "bus", "ferry", "wait", "transit"],
+  "alerts": [
+    {
+      "id": 1,
+      "type": "info",
+      "title": "Título de la alerta",
+      "message": "Mensaje informativo sobre el servicio o el evento.",
+      "active": true
+    }
+  ],
+  "_alertTypes": ["info", "warning", "danger", "success"],
+  "transit": {
+    "sectionTitle": "🎟 Tickets",
+    "warning": "⚠️ Nota importante sobre los tickets.",
+    "tickets": [
+      {
+        "name": "Nombre del ticket",
+        "description": "Descripción y cobertura del ticket.",
+        "recommended": true
+      }
+    ],
+    "appStore": "",
+    "googlePlay": "",
+    "note": "Nota adicional sobre el transporte."
+  }
+}

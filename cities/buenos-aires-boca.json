@@ -1,0 +1,133 @@
+{
+  "trip": {
+    "id": "buenos-aires-boca",
+    "name": "La Bombonera — Boca Juniors",
+    "shortName": "Boca CABA",
+    "emoji": "💙",
+    "origin": "Hotel Palermo",
+    "destination": "La Bombonera",
+    "description": "Subte + colectivo desde Palermo hasta La Boca"
+  },
+  "city": {
+    "name": "Buenos Aires",
+    "lat": -34.600,
+    "lng": -58.380,
+    "zoom": 13,
+    "weatherLat": -34.603,
+    "weatherLng": -58.381,
+    "bbox": { "minLat": -34.72, "maxLat": -34.53, "minLng": -58.50, "maxLng": -58.32 },
+    "tileZooms": [11, 12, 13, 14]
+  },
+  "stops": [
+    {
+      "id": 1, "emoji": "🏨", "name": "Hotel Palermo",
+      "lat": -34.5833, "lng": -58.4233, "type": "origin",
+      "instruction": "Punto de partida. Caminar ~5 min a la estación Palermo (Línea D).",
+      "detail": "Salir con 2 horas de anticipación los días de partido. El Subte puede saturarse."
+    },
+    {
+      "id": 2, "emoji": "🚇", "name": "Palermo — Subte Línea D",
+      "lat": -34.5857, "lng": -58.4127, "type": "transit",
+      "instruction": "EMBARQUE Subte Línea D dirección Catedral (centro).",
+      "detail": "Necesitás la tarjeta SUBE cargada. Validar al pasar el molinete. Viaje: ~8 estaciones hasta Lima."
+    },
+    {
+      "id": 3, "emoji": "🔄", "name": "Lima — Trasbordo a colectivo",
+      "lat": -34.6122, "lng": -58.3801, "type": "transfer",
+      "instruction": "BAJAR en Lima. Salir a Av. Lima y tomar colectivo 64 o 29.",
+      "detail": "El colectivo 64 va directo a La Boca. Tiempo de espera promedio: 5-10 min. Pagar con SUBE."
+    },
+    {
+      "id": 4, "emoji": "🚌", "name": "Brandsen y Del Valle Iberlucea",
+      "lat": -34.6370, "lng": -58.3660, "type": "critical",
+      "instruction": "⚠️ BAJAR AQUÍ. La Bombonera queda a 2 cuadras.",
+      "detail": "Bajarse en la parada de Brandsen y Del Valle Iberlucea. Caminar 2 cuadras por Brandsen."
+    },
+    {
+      "id": 5, "emoji": "💙", "name": "La Bombonera",
+      "lat": -34.6345, "lng": -58.3640, "type": "destination",
+      "instruction": "DESTINO. Brandsen 805, La Boca, Buenos Aires.",
+      "detail": "¡La Bombonera! Entrada por Brandsen 805. Puertas abren 2 horas antes del partido. ¡Vamos Boca!"
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "name": "Boca Juniors vs River Plate",
+      "emoji": "⚽",
+      "date": "2026-09-20T20:00:00Z",
+      "label": "20 sep · 17:00h Buenos Aires"
+    }
+  ],
+  "checklist": [
+    "Entrada al partido (app o impresa)",
+    "SUBE cargada con saldo suficiente",
+    "Celular cargado al 100%",
+    "DNI o pasaporte",
+    "Efectivo ARS (kioscos, emergencias)",
+    "Ropa de abrigo (noches porteñas)",
+    "Power bank",
+    "Esta app instalada offline"
+  ],
+  "schedules": [
+    {
+      "title": "🚇 Subte Línea D — Palermo → Lima",
+      "note": "Frecuencia normal: cada 3-5 min. En días de clásico puede saturarse o suspender servicio.",
+      "columns": ["Frecuencia", "Tiempo estimado", "Observación"],
+      "rows": [
+        { "cells": ["Continua", "~12 min", "8 estaciones"], "highlight": false },
+        { "cells": ["Pico partido", "~20 min", "Alta demanda"], "highlight": true }
+      ]
+    },
+    {
+      "title": "🚌 Colectivo 64 / 29 — Lima → La Boca",
+      "note": "Tiempo estimado desde parada en Av. Lima.",
+      "columns": ["Línea", "Tiempo estimado", "Parada de bajada"],
+      "rows": [
+        { "cells": ["64", "~20 min", "Brandsen y D.V. Iberlucea"], "highlight": true },
+        { "cells": ["29", "~25 min", "Brandsen y Irala"],          "highlight": false }
+      ]
+    }
+  ],
+  "transport": {
+    "estimatedTransitMin": 45,
+    "estimatedTransitCost": "ARS $250 aprox (SUBE)",
+    "transitSteps": [
+      { "mode": "walk",  "label": "Caminar a Subte Palermo",     "durationMin": 5  },
+      { "mode": "metro", "label": "Subte Línea D → Lima",         "durationMin": 12 },
+      { "mode": "wait",  "label": "Espera colectivo en Av. Lima", "durationMin": 8  },
+      { "mode": "bus",   "label": "Colectivo 64/29 → Brandsen",  "durationMin": 20 },
+      { "mode": "walk",  "label": "Caminar a La Bombonera",       "durationMin": 5  }
+    ]
+  },
+  "alerts": [
+    {
+      "id": 1,
+      "type": "warning",
+      "title": "Superclásico: alta demanda en Subte",
+      "message": "En días de clásico Boca-River el Subte puede suspender servicio por superpoblación. Salir con 30 min extra de anticipación.",
+      "active": true
+    },
+    {
+      "id": 2,
+      "type": "info",
+      "title": "Cortes de tránsito en La Boca",
+      "message": "Los días de partido se cortan calles alrededor del estadio. Los colectivos desvían su recorrido. Bajarse una parada antes si el colectivo no llega a Brandsen.",
+      "active": true
+    }
+  ],
+  "transit": {
+    "sectionTitle": "🎟 Tarjeta SUBE",
+    "warning": "⚠️ Sin SUBE no podés subir al Subte ni al colectivo. Cargala con saldo ANTES del viaje.",
+    "tickets": [
+      {
+        "name": "Tarjeta SUBE",
+        "description": "Tarjeta única para Subte, colectivo y tren en AMBA. Cargar saldo en kioscos, Correo Argentino o app SUBE.",
+        "recommended": true
+      }
+    ],
+    "appStore": "https://apps.apple.com/ar/app/sube/id1491757949",
+    "googlePlay": "https://play.google.com/store/apps/details?id=ar.gov.argentina.sube",
+    "note": "💡 La SUBE tiene descuento en viajes combinados dentro de las 2 horas del primer viaje."
+  }
+}

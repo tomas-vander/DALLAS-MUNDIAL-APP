@@ -1,0 +1,65 @@
+{
+  "version": "1.0",
+  "updated": "2026-06-13",
+  "regions": [
+    {
+      "name": "Norteamérica",
+      "emoji": "🌎",
+      "cities": ["dallas-mundial-2026"]
+    },
+    {
+      "name": "Sudamérica",
+      "emoji": "🌎",
+      "cities": ["buenos-aires-boca"]
+    },
+    {
+      "name": "Plantillas",
+      "emoji": "📝",
+      "cities": ["template"]
+    }
+  ],
+  "cities": [
+    {
+      "id": "dallas-mundial-2026",
+      "name": "Mundial 2026 — Dallas",
+      "emoji": "🏟️",
+      "city": "Dallas, TX",
+      "country": "Estados Unidos",
+      "countryEmoji": "🇺🇸",
+      "region": "Norteamérica",
+      "description": "Hilton Richardson → AT&T Stadium via DART + TRE",
+      "file": "cities/dallas-2026.json",
+      "events": 2,
+      "stops": 8,
+      "tags": ["fútbol", "mundial", "tren", "metro"]
+    },
+    {
+      "id": "buenos-aires-boca",
+      "name": "Boca Juniors — La Bombonera",
+      "emoji": "💙",
+      "city": "Buenos Aires",
+      "country": "Argentina",
+      "countryEmoji": "🇦🇷",
+      "region": "Sudamérica",
+      "description": "Hotel Palermo → La Bombonera via Subte + colectivo",
+      "file": "cities/buenos-aires-boca.json",
+      "events": 1,
+      "stops": 5,
+      "tags": ["fútbol", "subte", "colectivo", "argentina"]
+    },
+    {
+      "id": "template",
+      "name": "Plantilla vacía",
+      "emoji": "📝",
+      "city": "Tu ciudad",
+      "country": "Tu país",
+      "countryEmoji": "🌍",
+      "region": "Plantillas",
+      "description": "Punto de partida para crear tu propio viaje",
+      "file": "cities/template.json",
+      "events": 0,
+      "stops": 2,
+      "tags": ["plantilla", "personalizado"]
+    }
+  ]
+}

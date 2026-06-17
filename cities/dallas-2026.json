@@ -1,0 +1,98 @@
+{
+  "trip": {
+    "id": "dallas-mundial-2026",
+    "name": "Mundial 2026 — Dallas",
+    "shortName": "Dallas 2026",
+    "emoji": "🏟️",
+    "origin": "Hilton Richardson",
+    "destination": "AT&T Stadium",
+    "description": "Transporte público del Hilton Richardson al AT&T Stadium"
+  },
+  "city": {
+    "name": "Dallas, TX",
+    "lat": 32.82,
+    "lng": -96.85,
+    "zoom": 11,
+    "weatherLat": 32.78,
+    "weatherLng": -96.80,
+    "bbox": { "minLat": 32.5, "maxLat": 33.5, "minLng": -97.5, "maxLng": -96.5 },
+    "tileZooms": [8, 9, 10, 11, 12, 13, 14]
+  },
+  "stops": [
+    { "id": 1, "emoji": "🏨", "name": "Hilton Richardson", "lat": 32.9755, "lng": -96.7023, "type": "origin", "instruction": "Punto de partida. Caminar ~12 min o Uber hasta Galatyn Park Station.", "detail": "Dirección: 701 E Campbell Rd, Richardson TX 75081." },
+    { "id": 2, "emoji": "🚉", "name": "Galatyn Park Station (DART)", "lat": 32.9834, "lng": -96.7032, "type": "transit", "instruction": "EMBARQUE. DART Red Line dirección SUR hacia Dallas.", "detail": "Comprar ticket GoPass antes de subir. DART Day Pass $6 o TRE Regional Day Pass $9." },
+    { "id": 3, "emoji": "🔄", "name": "Victory Station (DART→TRE)", "lat": 32.7890, "lng": -96.8143, "type": "transfer", "instruction": "TRASBORDO. Bajar del DART, subir al TRE dirección Fort Worth.", "detail": "Seguir señales TRE / Trinity Railway Express. Espera típica: 10-20 min." },
+    { "id": 4, "emoji": "🚂", "name": "Market Center Station (TRE)", "lat": 32.8036, "lng": -96.8386, "type": "intermediate", "instruction": "NO bajar. Parada intermedia.", "detail": "Permanecer en el tren." },
+    { "id": 5, "emoji": "🚂", "name": "Downtown Irving/Heritage (TRE)", "lat": 32.8206, "lng": -96.9464, "type": "intermediate", "instruction": "NO bajar. Parada intermedia.", "detail": "Permanecer en el tren." },
+    { "id": 6, "emoji": "🚂", "name": "West Irving Station (TRE)", "lat": 32.8277, "lng": -97.0023, "type": "intermediate", "instruction": "NO bajar. Parada intermedia.", "detail": "Casi llegando. Prepararse para bajar." },
+    { "id": 7, "emoji": "🏁", "name": "CentrePort/DFW Airport (TRE)", "lat": 32.8547, "lng": -97.0459, "type": "critical", "instruction": "⚠️ BAJAR AQUÍ. Tomar bus charter o rideshare al estadio.", "detail": "Bus charter gratuito con ticket oficial. Si no hay charter: Uber/Lyft ~$15-20." },
+    { "id": 8, "emoji": "🏟️", "name": "AT&T Stadium", "lat": 32.7480, "lng": -97.0928, "type": "destination", "instruction": "DESTINO. ~10 min en bus charter desde CentrePort.", "detail": "Ingresar con ticket digital. Puertas abren 2 horas antes. Gates A, B, C, D." }
+  ],
+  "events": [
+    { "id": 1, "name": "Argentina vs Austria",  "emoji": "⚽", "date": "2026-06-22T20:00:00Z", "label": "22 jun · 15:00h Dallas" },
+    { "id": 2, "name": "Argentina vs Jordania", "emoji": "⚽", "date": "2026-06-27T20:00:00Z", "label": "27 jun · horario TBC" }
+  ],
+  "checklist": [
+    "Tickets del evento (app o impreso)",
+    "Celular cargado al 100%",
+    "GoPass instalada y con saldo",
+    "Agua (mínimo 1 litro)",
+    "Protector solar FPS 50+",
+    "Pasaporte o DNI",
+    "Efectivo USD",
+    "Power bank",
+    "Esta app offline"
+  ],
+  "schedules": [
+    {
+      "title": "🟦 Ida: Victory → CentrePort",
+      "note": "Cada 30 min en días de partido.",
+      "columns": ["Salida Victory", "Llegada CentrePort", ""],
+      "rows": [
+        { "cells": ["10:30", "11:05", "⭐ Sugerido"], "highlight": true },
+        { "cells": ["11:00", "11:35", ""], "highlight": false },
+        { "cells": ["13:30", "14:05", ""], "highlight": false }
+      ]
+    },
+    {
+      "title": "🔄 Vuelta: CentrePort → Victory",
+      "note": "",
+      "columns": ["Salida CentrePort", "Llegada Victory", ""],
+      "rows": [
+        { "cells": ["19:30", "20:05", "⭐ Recomendado"], "highlight": true },
+        { "cells": ["20:00", "20:35", ""], "highlight": false }
+      ]
+    }
+  ],
+  "transport": {
+    "estimatedTransitMin": 75,
+    "estimatedTransitCost": "USD $9.00",
+    "transitSteps": [
+      { "mode": "walk",  "label": "Caminar/Uber → Galatyn Park", "durationMin": 12 },
+      { "mode": "metro", "label": "DART Red Line → Victory",      "durationMin": 35 },
+      { "mode": "wait",  "label": "Espera TRE en Victory",        "durationMin": 15 },
+      { "mode": "train", "label": "TRE → CentrePort/DFW",         "durationMin": 30 },
+      { "mode": "bus",   "label": "Bus charter → AT&T Stadium",   "durationMin": 10 }
+    ]
+  },
+  "alerts": [
+    {
+      "id": 1,
+      "type": "info",
+      "title": "Servicio especial días de partido",
+      "message": "El TRE opera con frecuencia aumentada (cada 15 min) los días de partido del Mundial.",
+      "active": true
+    }
+  ],
+  "transit": {
+    "sectionTitle": "🎟 Tickets GoPass",
+    "warning": "⚠️ Comprar ANTES de subir al tren. Sin ticket no podés abordar.",
+    "tickets": [
+      { "name": "TRE Regional Day Pass — $9.00", "description": "Cubre DART + TRE ida y vuelta. La opción más simple.", "recommended": true },
+      { "name": "DART Day Pass — $6.00", "description": "Solo cubre DART (no incluye TRE). Necesitás ticket adicional.", "recommended": false }
+    ],
+    "appStore": "https://apps.apple.com/us/app/gopass/id490474238",
+    "googlePlay": "https://play.google.com/store/apps/details?id=com.ridescout.android.gopass",
+    "note": "🚌 Bus charter gratuito desde CentrePort con ticket oficial del partido."
+  }
+}
