@@ -91,10 +91,15 @@
         "note": "Partido el lunes 22 de junio a las 12:00h hora Dallas. Salí del hotel ~3.5h antes para llegar cómodo.",
         "columns": ["Salida Hotel", "Galatyn Park (DART)", "Victory Station (TRE)", "CentrePort/DFW", "AT&T Stadium"],
         "rows": [
+          { "cells": ["06:00h", "06:12h", "06:50h", "07:20h", "07:40h"], "highlight": false },
+          { "cells": ["06:30h", "06:42h", "07:20h", "07:50h", "08:10h"], "highlight": false },
+          { "cells": ["07:00h", "07:12h", "07:50h", "08:20h", "08:40h"], "highlight": false },
           { "cells": ["07:30h", "07:42h", "08:20h", "08:50h", "09:10h"], "highlight": false },
           { "cells": ["08:00h", "08:12h", "08:50h", "09:20h", "09:40h"], "highlight": true },
           { "cells": ["08:30h", "08:42h", "09:20h", "09:50h", "10:10h"], "highlight": false },
-          { "cells": ["09:00h", "09:12h", "09:50h", "10:20h", "10:40h"], "highlight": false }
+          { "cells": ["09:00h", "09:12h", "09:50h", "10:20h", "10:40h"], "highlight": false },
+          { "cells": ["09:30h", "09:42h", "10:20h", "10:50h", "11:10h"], "highlight": false },
+          { "cells": ["10:00h", "10:12h", "10:50h", "11:20h", "11:40h"], "highlight": false }
         ],
         "tips": [
           "⭐ Salida recomendada 08:00h — llegan con ~2h de margen al partido de 12:00h.",
@@ -137,9 +142,15 @@
         "note": "Partido el sábado 27 de junio a las 21:00h hora Dallas. Ruta desde Marriott Las Colinas con DART Orange Line.",
         "columns": ["Salida Hotel", "Irving Conv. Ctr (Orange)", "Victory Station (TRE)", "CentrePort/DFW", "AT&T Stadium"],
         "rows": [
+          { "cells": ["14:00h", "14:15h", "14:40h", "15:05h", "15:30h"], "highlight": false },
+          { "cells": ["14:30h", "14:45h", "15:10h", "15:35h", "16:00h"], "highlight": false },
+          { "cells": ["15:00h", "15:15h", "15:40h", "16:05h", "16:30h"], "highlight": false },
+          { "cells": ["15:30h", "15:45h", "16:10h", "16:35h", "17:00h"], "highlight": false },
+          { "cells": ["16:00h", "16:15h", "16:40h", "17:05h", "17:30h"], "highlight": false },
           { "cells": ["16:30h", "16:45h", "17:10h", "17:35h", "18:00h"], "highlight": false },
           { "cells": ["17:00h", "17:15h", "17:40h", "18:05h", "18:30h"], "highlight": true },
-          { "cells": ["17:30h", "17:45h", "18:10h", "18:35h", "19:00h"], "highlight": false }
+          { "cells": ["17:30h", "17:45h", "18:10h", "18:35h", "19:00h"], "highlight": false },
+          { "cells": ["18:00h", "18:15h", "18:40h", "19:05h", "19:30h"], "highlight": false }
         ],
         "tips": [
           "⭐ Salida recomendada 17:00h — llegan con ~2.5h de margen al partido de 21:00h.",
