@@ -3450,9 +3450,19 @@ function renderEventSchedule(idx) {
   sec.style.display = 'block';
   ttl.textContent = '🕐 ' + ev.emoji + ' Horarios — ' + ev.name;
 
+  // Cargar overrides guardados en localStorage
+  var overrideKey = 'schedule-override-' + ev.id;
+  var override = null;
+  try { override = JSON.parse(localStorage.getItem(overrideKey)); } catch(e) {}
+  if (override) sch = override;
+
   var html = '';
   if (sch.note) html += '<p class="info-note" style="margin-bottom:8px">' + escapeHtml(sch.note) + '</p>';
   if (sch.columns && sch.rows) {
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">';
+    html += '<span style="font-size:12px;color:#6b7280">' + sch.rows.length + ' opciones de salida</span>';
+    html += '<button onclick="openScheduleEditor(' + ev.id + ')" style="background:#1A4B8C;color:white;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">✏️ Editar horarios</button>';
+    html += '</div>';
     html += '<table class="tre-table"><thead><tr>';
     sch.columns.forEach(function(col){ html += '<th>' + escapeHtml(col) + '</th>'; });
     html += '</tr></thead><tbody>';
@@ -3469,6 +3479,87 @@ function renderEventSchedule(idx) {
     html += '</div>';
   }
   cnt.innerHTML = html;
+}
+
+function openScheduleEditor(evId) {
+  var ev = (APP_CONFIG.events || []).find(function(e){ return e.id === evId; });
+  if (!ev) return;
+  var overrideKey = 'schedule-override-' + evId;
+  var sch = null;
+  try { sch = JSON.parse(localStorage.getItem(overrideKey)); } catch(e) {}
+  if (!sch) sch = ev.schedule || buildAutoSchedule(ev);
+  if (!sch || !sch.rows) return;
+
+  // Construir modal con inputs
+  var rowsHtml = sch.rows.map(function(row, ri) {
+    var cellsHtml = (row.cells||[]).map(function(cell, ci) {
+      return '<input type="text" value="' + escapeHtml(cell) + '" ' +
+        'data-row="' + ri + '" data-col="' + ci + '" ' +
+        'style="width:100%;border:1.5px solid #e5e7eb;border-radius:6px;padding:6px 8px;font-size:13px;font-family:inherit;text-align:center;box-sizing:border-box">';
+    }).join('');
+    var highlightCheck = '<label style="display:flex;align-items:center;gap:4px;font-size:11px;color:#6b7280;white-space:nowrap">' +
+      '<input type="checkbox" data-highlight="' + ri + '"' + (row.highlight?' checked':'') + '> Recomendada</label>';
+    return '<div style="margin-bottom:10px;padding:8px;background:' + (row.highlight?'#fffbeb':'#f9fafb') + ';border-radius:8px;border:1px solid ' + (row.highlight?'#fde68a':'#e5e7eb') + '">' +
+      highlightCheck +
+      '<div style="display:grid;grid-template-columns:repeat(' + (row.cells||[]).length + ',1fr);gap:4px;margin-top:6px">' + cellsHtml + '</div>' +
+      '</div>';
+  }).join('');
+
+  var modal = document.createElement('div');
+  modal.id = 'schedule-edit-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:flex-end;justify-content:center';
+  modal.innerHTML =
+    '<div style="background:white;border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:500px;max-height:85vh;overflow-y:auto">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">' +
+        '<div style="font-size:16px;font-weight:800;color:#1f2937">✏️ Editar horarios</div>' +
+        '<button onclick="document.getElementById(\'schedule-edit-modal\').remove()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#6b7280">×</button>' +
+      '</div>' +
+      '<div style="font-size:12px;color:#6b7280;margin-bottom:12px">Columnas: <strong>' + (sch.columns||[]).join(' → ') + '</strong></div>' +
+      '<div id="sch-rows-editor">' + rowsHtml + '</div>' +
+      '<div style="display:flex;gap:8px;margin-top:16px">' +
+        '<button onclick="resetSchedule(' + evId + ')" style="flex:1;padding:12px;border:1.5px solid #ef4444;border-radius:10px;color:#ef4444;background:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">🗑 Restaurar</button>' +
+        '<button onclick="saveScheduleEditor(' + evId + ')" style="flex:2;padding:12px;background:#1A4B8C;color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">💾 Guardar</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(modal);
+}
+
+function saveScheduleEditor(evId) {
+  var ev = (APP_CONFIG.events || []).find(function(e){ return e.id === evId; });
+  if (!ev) return;
+  var overrideKey = 'schedule-override-' + evId;
+  var sch = null;
+  try { sch = JSON.parse(localStorage.getItem(overrideKey)); } catch(e) {}
+  if (!sch) sch = JSON.parse(JSON.stringify(ev.schedule || buildAutoSchedule(ev)));
+
+  // Leer todos los inputs
+  var inputs = document.querySelectorAll('#sch-rows-editor input[data-row]');
+  inputs.forEach(function(inp) {
+    var ri = parseInt(inp.getAttribute('data-row'));
+    var ci = parseInt(inp.getAttribute('data-col'));
+    if (!sch.rows[ri]) return;
+    if (!sch.rows[ri].cells) sch.rows[ri].cells = [];
+    sch.rows[ri].cells[ci] = inp.value.trim();
+  });
+  // Leer checkboxes de "recomendada"
+  var checks = document.querySelectorAll('#sch-rows-editor input[data-highlight]');
+  checks.forEach(function(chk) {
+    var ri = parseInt(chk.getAttribute('data-highlight'));
+    if (sch.rows[ri]) sch.rows[ri].highlight = chk.checked;
+  });
+
+  localStorage.setItem(overrideKey, JSON.stringify(sch));
+  document.getElementById('schedule-edit-modal').remove();
+  updateEventSchedule(APP_CONFIG.events[currentEventIdx]);
+  showToast('✅ Horarios guardados');
+}
+
+function resetSchedule(evId) {
+  if (!confirm('¿Restaurar los horarios originales?')) return;
+  localStorage.removeItem('schedule-override-' + evId);
+  document.getElementById('schedule-edit-modal').remove();
+  updateEventSchedule(APP_CONFIG.events[currentEventIdx]);
+  showToast('🔄 Horarios restaurados');
 }
 
 function buildAutoSchedule(ev) {
