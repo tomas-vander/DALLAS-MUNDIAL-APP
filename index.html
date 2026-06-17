@@ -3361,33 +3361,64 @@ function getChecklistCustom() {
 function saveChecklistCustom(arr) {
   localStorage.setItem(getTripKey('checklist-custom'), JSON.stringify(arr));
 }
+function getChecklistHidden() {
+  return JSON.parse(localStorage.getItem(getTripKey('checklist-hidden')) || '[]');
+}
 
 function renderChecklist() {
   var el      = document.getElementById('checklist-items');
   var state   = JSON.parse(localStorage.getItem(getTripKey('checklist')) || '{}');
   var base    = APP_CONFIG.checklist || [];
   var custom  = getChecklistCustom();
-  var all     = base.concat(custom);
+  var hidden  = getChecklistHidden();
   el.innerHTML = '';
-  all.forEach(function(texto, idx) {
-    var isCustom = idx >= base.length;
-    var done = !!state['i'+idx];
+  var visibleIdx = 0;
+  base.forEach(function(texto, baseIdx) {
+    if (hidden.indexOf(baseIdx) !== -1) return;
+    var idx = visibleIdx++;
+    var done = !!state['i'+baseIdx];
     var div = document.createElement('div');
     div.className = 'checklist-item';
-    div.style.display = 'flex';
-    div.style.alignItems = 'center';
+    div.style.cssText = 'display:flex;align-items:center';
     div.innerHTML =
-      '<div class="cl-check' + (done?' done':'') + '" onclick="toggleCL('+idx+')" style="cursor:pointer">' + (done?'✓':'') + '</div>' +
-      '<span class="cl-label' + (done?' done':'') + '" onclick="toggleCL('+idx+')" style="flex:1;cursor:pointer">' + escapeHtml(texto) + '</span>' +
-      (isCustom ? '<button onclick="deleteChecklistItem('+(idx - base.length)+')" style="background:none;border:none;color:#d1d5db;font-size:18px;cursor:pointer;padding:0 4px;line-height:1" title="Eliminar">×</button>' : '');
+      '<div class="cl-check' + (done?' done':'') + '" onclick="toggleCLBase('+baseIdx+')" style="cursor:pointer">' + (done?'✓':'') + '</div>' +
+      '<span class="cl-label' + (done?' done':'') + '" onclick="toggleCLBase('+baseIdx+')" style="flex:1;cursor:pointer">' + escapeHtml(texto) + '</span>' +
+      '<button onclick="hideBaseItem('+baseIdx+')" style="background:none;border:none;color:#d1d5db;font-size:16px;cursor:pointer;padding:2px 6px;line-height:1;flex-shrink:0" title="Eliminar">🗑</button>';
+    el.appendChild(div);
+  });
+  custom.forEach(function(texto, ci) {
+    var done = !!state['c'+ci];
+    var div = document.createElement('div');
+    div.className = 'checklist-item';
+    div.style.cssText = 'display:flex;align-items:center';
+    div.innerHTML =
+      '<div class="cl-check' + (done?' done':'') + '" onclick="toggleCLCustom('+ci+')" style="cursor:pointer">' + (done?'✓':'') + '</div>' +
+      '<span class="cl-label' + (done?' done':'') + '" onclick="toggleCLCustom('+ci+')" style="flex:1;cursor:pointer">' + escapeHtml(texto) + '</span>' +
+      '<button onclick="deleteChecklistItem('+ci+')" style="background:none;border:none;color:#d1d5db;font-size:16px;cursor:pointer;padding:2px 6px;line-height:1;flex-shrink:0" title="Eliminar">🗑</button>';
     el.appendChild(div);
   });
 }
 
-function toggleCL(idx) {
+function toggleCLBase(baseIdx) {
   var s = JSON.parse(localStorage.getItem(getTripKey('checklist')) || '{}');
-  s['i'+idx] = !s['i'+idx];
+  s['i'+baseIdx] = !s['i'+baseIdx];
   localStorage.setItem(getTripKey('checklist'), JSON.stringify(s));
+  renderChecklist();
+}
+
+function toggleCLCustom(ci) {
+  var s = JSON.parse(localStorage.getItem(getTripKey('checklist')) || '{}');
+  s['c'+ci] = !s['c'+ci];
+  localStorage.setItem(getTripKey('checklist'), JSON.stringify(s));
+  renderChecklist();
+}
+
+function toggleCL(idx) { toggleCLBase(idx); }
+
+function hideBaseItem(baseIdx) {
+  var hidden = getChecklistHidden();
+  if (hidden.indexOf(baseIdx) === -1) hidden.push(baseIdx);
+  localStorage.setItem(getTripKey('checklist-hidden'), JSON.stringify(hidden));
   renderChecklist();
 }
 
@@ -3413,6 +3444,8 @@ function deleteChecklistItem(customIdx) {
 function clearChecklist() {
   if (!confirm('¿Limpiar todo el checklist?')) return;
   localStorage.setItem(getTripKey('checklist'), '{}');
+  localStorage.removeItem(getTripKey('checklist-hidden'));
+  saveChecklistCustom([]);
   renderChecklist();
   showToast('🗑 Checklist limpiado');
 }
