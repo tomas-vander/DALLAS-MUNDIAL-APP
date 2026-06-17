@@ -1,7 +1,7 @@
 // Service Worker — Transit Guide PWA
 // Version: transit-app-v4
 
-var CACHE_NAME = 'transit-app-v11';
+var CACHE_NAME = 'transit-app-v12';
 
 // index.html y trip-config.json NO se cachean — siempre se sirven frescos desde red
 var APP_SHELL = [
