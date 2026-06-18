@@ -1397,11 +1397,11 @@
             <div style="display:flex;gap:10px">
               <div style="flex:1">
                 <div class="detail-label">Check-in</div>
-                <input type="date" id="cfg-hilton-arrival" class="edit-field" style="font-size:13px">
+                <input type="date" id="cfg-hilton-arrival" class="edit-field" style="font-size:13px" onchange="saveUserProfile(true)">
               </div>
               <div style="flex:1">
                 <div class="detail-label">Check-out</div>
-                <input type="date" id="cfg-hilton-departure" class="edit-field" style="font-size:13px">
+                <input type="date" id="cfg-hilton-departure" class="edit-field" style="font-size:13px" onchange="saveUserProfile(true)">
               </div>
             </div>
           </div>
@@ -1421,11 +1421,11 @@
             <div style="display:flex;gap:10px">
               <div style="flex:1">
                 <div class="detail-label">Check-in</div>
-                <input type="date" id="cfg-marriott-arrival" class="edit-field" style="font-size:13px">
+                <input type="date" id="cfg-marriott-arrival" class="edit-field" style="font-size:13px" onchange="saveUserProfile(true)">
               </div>
               <div style="flex:1">
                 <div class="detail-label">Check-out</div>
-                <input type="date" id="cfg-marriott-departure" class="edit-field" style="font-size:13px">
+                <input type="date" id="cfg-marriott-departure" class="edit-field" style="font-size:13px" onchange="saveUserProfile(true)">
               </div>
             </div>
           </div>
@@ -1444,8 +1444,8 @@
 
       <!-- Mis partidos -->
       <div class="info-section">
-        <div class="section-title">⚽ Mis partidos</div>
-        <p class="info-note" style="margin-bottom:10px">Marcá a cuáles vas. Los activos aparecen primero en la agenda.</p>
+        <div class="section-title">🎟️ Mis partidos</div>
+        <p class="info-note" style="margin-bottom:12px">Marcá si tenés entrada y anotá tu sector y butaca.</p>
         <div id="cfg-matches-list"></div>
       </div>
 
@@ -4035,17 +4035,20 @@ function getUserProfile() {
   try { return JSON.parse(localStorage.getItem('user-profile') || '{}'); } catch(e) { return {}; }
 }
 
-function saveUserProfile() {
+function saveUserProfile(silent) {
   var profile = getUserProfile();
   profile.groupSize = parseInt(document.getElementById('cfg-group-size-display').textContent) || 1;
+  if (!profile.hotels) profile.hotels = {};
   ['hilton','marriott'].forEach(function(key) {
-    if (!profile.hotels) profile.hotels = {};
     if (!profile.hotels[key]) profile.hotels[key] = {};
-    profile.hotels[key].arrival   = document.getElementById('cfg-'+key+'-arrival').value;
-    profile.hotels[key].departure = document.getElementById('cfg-'+key+'-departure').value;
+    // Solo actualizar fechas si tienen valor — nunca borrar datos guardados con un campo vacío
+    var arrVal = document.getElementById('cfg-'+key+'-arrival');
+    var depVal = document.getElementById('cfg-'+key+'-departure');
+    if (arrVal && arrVal.value) profile.hotels[key].arrival   = arrVal.value;
+    if (depVal && depVal.value) profile.hotels[key].departure = depVal.value;
   });
   try { localStorage.setItem('user-profile', JSON.stringify(profile)); } catch(e) {}
-  showToast('✅ Perfil guardado');
+  if (!silent) showToast('✅ Perfil guardado');
 }
 
 function toggleHotel(key) {
@@ -4072,12 +4075,16 @@ function toggleMatch(eventId) {
   var matches = getUserMatches();
   matches[eventId] = !matches[eventId];
   try { localStorage.setItem('user-matches', JSON.stringify(matches)); } catch(e) {}
-  var card = document.querySelector('.cfg-match-card[data-id="'+eventId+'"]');
-  if (card) {
-    card.classList.toggle('attending', !!matches[eventId]);
-    var check = card.querySelector('.cfg-match-check');
-    if (check) check.innerHTML = matches[eventId] ? '✓' : '';
-  }
+  // Re-render para mostrar/ocultar campos de sector/butaca
+  renderConfigTab();
+}
+
+function saveTicketInfo(eventId, field, value) {
+  var matches = getUserMatches();
+  var key = 'ticket-' + eventId;
+  if (!matches[key]) matches[key] = {};
+  matches[key][field] = value;
+  try { localStorage.setItem('user-matches', JSON.stringify(matches)); } catch(e) {}
 }
 
 function _applyHotelUI(key, active) {
@@ -4115,13 +4122,47 @@ function renderConfigTab() {
     var html = '';
     APP_CONFIG.events.forEach(function(ev) {
       var attending = !!matches[ev.id];
-      html += '<div class="cfg-match-card'+(attending?' attending':'')+'" data-id="'+ev.id+'" onclick="toggleMatch('+ev.id+')">' +
-        '<div class="cfg-match-check">'+(attending?'✓':'')+'</div>' +
-        '<div style="flex:1">' +
-          '<div style="font-weight:700;font-size:14px">'+escapeHtml(ev.name)+'</div>' +
-          '<div style="font-size:12px;color:#6b7280;margin-top:2px">'+escapeHtml(ev.label)+'</div>' +
+      var ticket = matches['ticket-'+ev.id] || {};
+      var localDate = ev.date ? new Date(ev.date) : null;
+      var dateStr = localDate ? localDate.toLocaleDateString('es-AR', { weekday:'long', day:'numeric', month:'long' }) : '';
+      var timeStr = localDate ? localDate.toLocaleTimeString('es-AR', { hour:'2-digit', minute:'2-digit' }) : '';
+      // Dias restantes
+      var daysLeft = localDate ? Math.ceil((localDate - Date.now()) / 86400000) : null;
+      var daysLabel = '';
+      if (daysLeft !== null) {
+        if (daysLeft < 0) daysLabel = '<span style="color:#6b7280;font-size:11px">Ya jugado</span>';
+        else if (daysLeft === 0) daysLabel = '<span style="color:#ef4444;font-size:11px;font-weight:700">¡Hoy!</span>';
+        else daysLabel = '<span style="color:#1A4B8C;font-size:11px;font-weight:600">en '+daysLeft+' días</span>';
+      }
+      var teams = ev.name.split(' vs ');
+      var team1 = teams[0] ? teams[0].trim() : ev.name;
+      var team2 = teams[1] ? teams[1].trim() : '';
+      html += '<div style="border:2px solid '+(attending?'#10b981':'#e5e7eb')+';border-radius:14px;margin-bottom:14px;overflow:hidden;background:'+(attending?'#f0fdf4':'white')+'">' +
+        // Header: toggle de asistencia
+        '<div style="display:flex;align-items:center;gap:12px;padding:14px 14px 10px" onclick="toggleMatch('+ev.id+')" style="cursor:pointer">' +
+          '<div style="width:32px;height:32px;border-radius:50%;border:2px solid '+(attending?'#10b981':'#d1d5db')+';background:'+(attending?'#10b981':'white')+';display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;cursor:pointer">'+(attending?'✓':'')+'</div>' +
+          '<div style="flex:1">' +
+            '<div style="font-weight:800;font-size:15px;color:#111">'+escapeHtml(team1)+'</div>' +
+            (team2 ? '<div style="font-size:12px;color:#6b7280;margin-top:1px">vs '+escapeHtml(team2)+'</div>' : '') +
+          '</div>' +
+          '<div style="text-align:right">' +
+            '<div style="font-size:11px;font-weight:700;color:'+(attending?'#10b981':'#9ca3af')+'">'+( attending?'🎟 Tengo entrada':'Sin entrada')+'</div>' +
+            daysLabel +
+          '</div>' +
         '</div>' +
-        '<span style="font-size:20px">'+ev.emoji+'</span>' +
+        // Info del partido
+        '<div style="padding:0 14px 10px;display:flex;gap:16px;font-size:12px;color:#4b5563;border-top:1px solid '+(attending?'#bbf7d0':'#f3f4f6')+';padding-top:8px">' +
+          '<span>📅 '+escapeHtml(dateStr)+'</span>' +
+          '<span>🕐 '+timeStr+'h</span>' +
+        '</div>' +
+        '<div style="padding:0 14px 10px;font-size:12px;color:#4b5563">🏟️ AT&T Stadium · Arlington, TX</div>' +
+        // Campos sector/butaca (solo si tiene entrada)
+        (attending ? '<div style="padding:0 14px 14px;border-top:1px solid #bbf7d0;padding-top:10px;display:flex;gap:8px">' +
+          '<div style="flex:1"><div style="font-size:11px;color:#6b7280;margin-bottom:4px">Sector / Tribuna</div>' +
+            '<input type="text" placeholder="Ej: C114" value="'+escapeHtml(ticket.sector||'')+'" onchange="saveTicketInfo('+ev.id+',\'sector\',this.value)" style="width:100%;box-sizing:border-box;border:1.5px solid #d1d5db;border-radius:8px;padding:7px 10px;font-size:13px"></div>' +
+          '<div style="flex:1"><div style="font-size:11px;color:#6b7280;margin-bottom:4px">Fila / Butaca</div>' +
+            '<input type="text" placeholder="Ej: F · 22" value="'+escapeHtml(ticket.seat||'')+'" onchange="saveTicketInfo('+ev.id+',\'seat\',this.value)" style="width:100%;box-sizing:border-box;border:1.5px solid #d1d5db;border-radius:8px;padding:7px 10px;font-size:13px"></div>' +
+        '</div>' : '') +
       '</div>';
     });
     matchEl.innerHTML = html;
