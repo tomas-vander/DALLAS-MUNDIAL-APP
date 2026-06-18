@@ -963,6 +963,8 @@
       transition: transform 0.15s;
     }
   </style>
+  <!-- jsQR para escaneo de QR/barcode -->
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
@@ -1584,23 +1586,53 @@
       </div>
 
       <div class="info-section">
-        <div class="section-title">📷 Escáner de documentos</div>
-        <p class="info-note" style="margin-bottom:12px">Tomá una foto de tu boarding pass, entrada, voucher o cualquier documento. Queda guardado en el dispositivo.</p>
+        <div class="section-title">📷 Escáner</div>
 
-        <!-- Opción 1: cámara nativa (más simple en mobile) -->
-        <label class="btn btn-primary" style="display:block;text-align:center;margin-bottom:4px;cursor:pointer">
-          📸 Sacar foto con la cámara
-          <input type="file" id="scan-camera-input" accept="image/*" capture="environment" style="display:none" onchange="handleScanUpload(event)">
-        </label>
-        <!-- Opción 2: cámara en app / galería -->
-        <button class="btn btn-outline" onclick="openScanner()" style="margin-bottom:4px">🎥 Cámara en la app</button>
-        <button class="btn btn-outline" onclick="document.getElementById('scan-upload').click()">🖼️ Elegir de la galería</button>
-        <input type="file" id="scan-upload" accept="image/*" style="display:none" onchange="handleScanUpload(event)">
+        <!-- Modo selector -->
+        <div style="display:flex;gap:8px;margin-bottom:14px">
+          <button id="scan-mode-photo" onclick="setScanMode('photo')"
+            style="flex:1;padding:10px;border-radius:10px;border:2px solid #1A4B8C;background:#1A4B8C;color:white;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit">
+            📸 Foto / Doc
+          </button>
+          <button id="scan-mode-qr" onclick="setScanMode('qr')"
+            style="flex:1;padding:10px;border-radius:10px;border:2px solid #e5e7eb;background:white;color:#374151;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit">
+            📲 QR / Código
+          </button>
+        </div>
 
-        <video id="scan-video" style="display:none;width:100%;border-radius:10px;margin-top:8px" playsinline autoplay></video>
+        <!-- Modo FOTO -->
+        <div id="scan-panel-photo">
+          <p class="info-note" style="margin-bottom:10px">Tomá una foto de tu boarding pass, entrada, voucher o pasaporte. Queda guardado en el dispositivo.</p>
+          <label class="btn btn-primary" style="display:block;text-align:center;margin-bottom:4px;cursor:pointer">
+            📸 Sacar foto con la cámara
+            <input type="file" id="scan-camera-input" accept="image/*" capture="environment" style="display:none" onchange="handleScanUpload(event)">
+          </label>
+          <button class="btn btn-outline" onclick="openScanner('photo')" style="margin-bottom:4px">🎥 Cámara en la app</button>
+          <button class="btn btn-outline" onclick="document.getElementById('scan-upload').click()">🖼️ Elegir de la galería</button>
+          <input type="file" id="scan-upload" accept="image/*" style="display:none" onchange="handleScanUpload(event)">
+        </div>
+
+        <!-- Modo QR -->
+        <div id="scan-panel-qr" style="display:none">
+          <p class="info-note" style="margin-bottom:10px">Apuntá la cámara al código QR o de barras. Se detecta automáticamente y queda guardado.</p>
+          <button class="btn btn-primary" onclick="openScanner('qr')" style="width:100%;margin-bottom:4px">📲 Escanear QR / código de barras</button>
+          <input type="file" id="scan-qr-upload" accept="image/*" style="display:none" onchange="handleQRUpload(event)">
+          <button class="btn btn-outline" onclick="document.getElementById('scan-qr-upload').click()" style="width:100%">🖼️ Detectar desde imagen</button>
+        </div>
+
+        <!-- Cámara compartida -->
+        <div id="scan-camera-wrap" style="display:none;margin-top:10px;position:relative">
+          <video id="scan-video" style="width:100%;border-radius:10px" playsinline autoplay></video>
+          <!-- overlay QR finder -->
+          <div id="scan-qr-overlay" style="display:none;position:absolute;inset:0;pointer-events:none">
+            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;border:3px solid #22c55e;border-radius:12px;box-shadow:0 0 0 9999px rgba(0,0,0,0.45)"></div>
+            <div style="position:absolute;bottom:16px;width:100%;text-align:center;color:white;font-size:13px;font-weight:600;text-shadow:0 1px 4px rgba(0,0,0,0.8)">Apuntá al código</div>
+          </div>
+          <div id="scan-qr-result" style="display:none;position:absolute;top:8px;left:8px;right:8px;background:#22c55e;color:white;border-radius:8px;padding:8px 12px;font-size:13px;font-weight:700;text-align:center"></div>
+        </div>
         <canvas id="scan-canvas" style="display:none"></canvas>
-        <div id="scan-capture-btns" style="display:none;margin-top:8px">
-          <button class="btn btn-success" onclick="capturarFoto()">📸 Capturar</button>
+        <div id="scan-capture-btns" style="display:none;margin-top:8px;display:none">
+          <button class="btn btn-success" onclick="capturarFoto()">📸 Capturar foto</button>
           <button class="btn btn-danger"  onclick="cerrarCamara()" style="margin-top:4px">✖ Cerrar cámara</button>
         </div>
       </div>
@@ -4932,6 +4964,7 @@ function compartirViajePlan() {
 var scanStream = null;
 var _pendingScanBase64 = null;
 var _pendingScanDefaultName = '';
+var _pendingScanQRValue = null;
 
 function getScanDocs() {
   try { return JSON.parse(localStorage.getItem('scan-docs') || '[]'); } catch(e) { return []; }
@@ -4946,10 +4979,14 @@ function renderScanList() {
   if (docs.length === 0) { el.innerHTML = '<div class="empty-state">No hay documentos guardados todavía.</div>'; return; }
   var html = '';
   docs.forEach(function(doc, idx) {
+    var thumb = doc.qr
+      ? '<div class="scan-item-thumb" onclick="verDocumento(' + idx + ')" style="cursor:pointer;background:#f0fdf4;display:flex;align-items:center;justify-content:center;font-size:28px;border-radius:8px;border:1.5px solid #bbf7d0">📲</div>'
+      : '<img class="scan-item-thumb" src="' + doc.img + '" onclick="verDocumento(' + idx + ')" style="cursor:pointer">';
     html += '<div class="scan-item">' +
-      '<img class="scan-item-thumb" src="' + doc.img + '" onclick="verDocumento(' + idx + ')" style="cursor:pointer">' +
+      thumb +
       '<div class="scan-item-info">' +
         '<div class="scan-item-name">' + escapeHtml(doc.name) + '</div>' +
+        (doc.qr ? '<div class="scan-item-date" style="font-size:11px;color:#059669;word-break:break-all;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + escapeHtml(doc.qr) + '</div>' : '') +
         '<div class="scan-item-date">' + new Date(doc.ts).toLocaleString('es-AR') + '</div>' +
       '</div>' +
       '<button class="scan-del-btn" onclick="deleteScanDoc(' + idx + ')">🗑</button>' +
@@ -4961,7 +4998,11 @@ function renderScanList() {
 function verDocumento(idx) {
   var doc = getScanDocs()[idx]; if (!doc) return;
   var w = window.open('', '_blank');
-  w.document.write('<html><body style="margin:0;background:#000"><img src="'+doc.img+'" style="max-width:100%;display:block;margin:auto"></body></html>');
+  if (doc.qr) {
+    w.document.write('<html><body style="margin:0;font-family:sans-serif;padding:24px;background:#f0fdf4"><h2 style="color:#059669">📲 Código QR / Barcode</h2><p style="font-size:22px;word-break:break-all">' + doc.qr.replace(/</g,'&lt;') + '</p>' + (doc.img ? '<img src="'+doc.img+'" style="max-width:100%;margin-top:16px;border-radius:8px">' : '') + '</body></html>');
+  } else {
+    w.document.write('<html><body style="margin:0;background:#000"><img src="'+doc.img+'" style="max-width:100%;display:block;margin:auto"></body></html>');
+  }
 }
 
 function saveDoc(base64, name) {
@@ -4978,20 +5019,140 @@ function deleteScanDoc(idx) {
   localStorage.setItem('scan-docs', JSON.stringify(docs)); renderScanList();
 }
 
-function openScanner() {
+var _scanMode = 'photo';
+var _qrScanLoop = null;
+
+function setScanMode(mode) {
+  _scanMode = mode;
+  cerrarCamara();
+  document.getElementById('scan-panel-photo').style.display = mode === 'photo' ? 'block' : 'none';
+  document.getElementById('scan-panel-qr').style.display   = mode === 'qr'    ? 'block' : 'none';
+  var btnPhoto = document.getElementById('scan-mode-photo');
+  var btnQR    = document.getElementById('scan-mode-qr');
+  if (btnPhoto) { btnPhoto.style.background = mode==='photo'?'#1A4B8C':'white'; btnPhoto.style.color = mode==='photo'?'white':'#374151'; btnPhoto.style.borderColor = mode==='photo'?'#1A4B8C':'#e5e7eb'; }
+  if (btnQR)    { btnQR.style.background    = mode==='qr'?'#059669':'white';    btnQR.style.color    = mode==='qr'?'white':'#374151';    btnQR.style.borderColor    = mode==='qr'?'#059669':'#e5e7eb'; }
+}
+
+function openScanner(mode) {
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { showToast('⚠️ Cámara no disponible en este navegador'); return; }
-  var v = document.getElementById('scan-video');
+  var v    = document.getElementById('scan-video');
+  var wrap = document.getElementById('scan-camera-wrap');
   var btns = document.getElementById('scan-capture-btns');
-  navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } } })
+  var qrOv = document.getElementById('scan-qr-overlay');
+  navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } } })
     .then(function(stream) {
-      scanStream = stream; v.srcObject = stream;
-      v.style.display = 'block'; btns.style.display = 'block';
+      scanStream = stream;
+      v.srcObject = stream;
+      wrap.style.display = 'block';
       v.play();
+      if (mode === 'qr') {
+        if (qrOv) qrOv.style.display = 'block';
+        btns.style.display = 'none';
+        _startQRLoop();
+      } else {
+        if (qrOv) qrOv.style.display = 'none';
+        btns.style.display = 'block';
+      }
     })
     .catch(function(err) {
       if (err.name === 'NotAllowedError') showToast('⚠️ Permiso de cámara denegado');
       else showToast('⚠️ No se pudo acceder a la cámara');
     });
+}
+
+function _startQRLoop() {
+  var v   = document.getElementById('scan-video');
+  var c   = document.getElementById('scan-canvas');
+  var res = document.getElementById('scan-qr-result');
+  var detected = false;
+
+  function tick() {
+    if (!scanStream || detected) return;
+    if (v.readyState === v.HAVE_ENOUGH_DATA) {
+      c.width = v.videoWidth; c.height = v.videoHeight;
+      var ctx = c.getContext('2d');
+      ctx.drawImage(v, 0, 0);
+      var imageData = ctx.getImageData(0, 0, c.width, c.height);
+
+      // Intentar BarcodeDetector (nativo Chrome Android)
+      if (window.BarcodeDetector) {
+        window.BarcodeDetector.getSupportedFormats().then(function(fmts) {
+          var bd = new window.BarcodeDetector({ formats: fmts });
+          bd.detect(v).then(function(codes) {
+            if (codes.length > 0) { _onQRDetected(codes[0].rawValue, detected, res); detected = true; }
+          }).catch(function(){});
+        });
+      } else if (window.jsQR) {
+        // Fallback jsQR
+        var code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'dontInvert' });
+        if (code) { _onQRDetected(code.data, detected, res); detected = true; }
+      }
+    }
+    if (!detected) _qrScanLoop = requestAnimationFrame(tick);
+  }
+  _qrScanLoop = requestAnimationFrame(tick);
+}
+
+function _onQRDetected(value, already, resEl) {
+  if (already) return;
+  if (_qrScanLoop) { cancelAnimationFrame(_qrScanLoop); _qrScanLoop = null; }
+  // Vibrar si disponible
+  if (navigator.vibrate) navigator.vibrate(200);
+  // Mostrar resultado
+  if (resEl) { resEl.textContent = '✅ ' + value; resEl.style.display = 'block'; }
+  // Guardar como "doc" con el texto del QR
+  var nombre = 'QR · ' + new Date().toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'});
+  // Capturar imagen también
+  var v = document.getElementById('scan-video');
+  var c = document.getElementById('scan-canvas');
+  c.width = v.videoWidth; c.height = v.videoHeight;
+  c.getContext('2d').drawImage(v, 0, 0);
+  var img = c.toDataURL('image/jpeg', 0.7);
+  cerrarCamara();
+  // Mostrar modal con nombre + contenido
+  _pendingScanBase64 = img;
+  _pendingScanDefaultName = nombre;
+  _pendingScanQRValue = value;
+  showScanNameModal(nombre);
+}
+
+function handleQRUpload(e) {
+  var file = e.target.files && e.target.files[0]; if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    var img = new Image();
+    img.onload = function() {
+      var c = document.getElementById('scan-canvas');
+      c.width = img.width; c.height = img.height;
+      c.getContext('2d').drawImage(img, 0, 0);
+      var imageData = c.getContext('2d').getImageData(0, 0, c.width, c.height);
+      var found = false;
+      if (window.BarcodeDetector) {
+        window.BarcodeDetector.getSupportedFormats().then(function(fmts) {
+          new window.BarcodeDetector({ formats: fmts }).detect(img).then(function(codes) {
+            if (codes.length > 0) { found = true; _onQRDetectedFromImage(codes[0].rawValue, ev.target.result); }
+            else showToast('⚠️ No se detectó ningún código en la imagen');
+          }).catch(function(){ showToast('⚠️ No se pudo detectar el código'); });
+        });
+      } else if (window.jsQR) {
+        var code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'attemptBoth' });
+        if (code) { found = true; _onQRDetectedFromImage(code.data, ev.target.result); }
+        if (!found) showToast('⚠️ No se detectó ningún código en la imagen');
+      } else {
+        showToast('⚠️ Escáner no disponible en este navegador');
+      }
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+}
+
+function _onQRDetectedFromImage(value, imgBase64) {
+  _pendingScanBase64 = imgBase64;
+  _pendingScanQRValue = value;
+  _pendingScanDefaultName = 'QR · ' + new Date().toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'});
+  showScanNameModal(_pendingScanDefaultName);
 }
 
 function capturarFoto() {
@@ -5006,9 +5167,12 @@ function capturarFoto() {
 }
 
 function cerrarCamara() {
+  if (_qrScanLoop) { cancelAnimationFrame(_qrScanLoop); _qrScanLoop = null; }
   if (scanStream) { scanStream.getTracks().forEach(function(t){ t.stop(); }); scanStream = null; }
-  var v = document.getElementById('scan-video'); if (v) v.style.display = 'none';
+  var wrap = document.getElementById('scan-camera-wrap'); if (wrap) wrap.style.display = 'none';
+  var v = document.getElementById('scan-video'); if (v) { v.srcObject = null; }
   var b = document.getElementById('scan-capture-btns'); if (b) b.style.display = 'none';
+  var res = document.getElementById('scan-qr-result'); if (res) res.style.display = 'none';
 }
 
 function handleScanUpload(e) {
@@ -5035,12 +5199,23 @@ function confirmScanName() {
   var input = document.getElementById('scan-name-input');
   var name = (input && input.value.trim()) || _pendingScanDefaultName || 'Documento';
   document.getElementById('scan-name-modal').style.display = 'none';
-  if (_pendingScanBase64) { saveDoc(_pendingScanBase64, name); _pendingScanBase64 = null; }
+  if (_pendingScanQRValue) {
+    var docs = getScanDocs();
+    docs.unshift({ img: _pendingScanBase64 || null, qr: _pendingScanQRValue, name: name, ts: Date.now() });
+    if (docs.length > 30) docs = docs.slice(0, 30);
+    try { localStorage.setItem('scan-docs', JSON.stringify(docs)); renderScanList(); showToast('📲 Código guardado'); }
+    catch(e) { showToast('⚠️ Sin espacio en el dispositivo'); }
+    _pendingScanQRValue = null;
+  } else if (_pendingScanBase64) {
+    saveDoc(_pendingScanBase64, name);
+  }
+  _pendingScanBase64 = null;
 }
 
 function cancelScanName() {
   document.getElementById('scan-name-modal').style.display = 'none';
   _pendingScanBase64 = null;
+  _pendingScanQRValue = null;
 }
 
 // ============================================================
