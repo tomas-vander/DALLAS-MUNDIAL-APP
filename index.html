@@ -4184,13 +4184,13 @@ function renderConfigTab() {
           var rows = '';
           seats.forEach(function(s, si) {
             rows += '<div style="display:flex;gap:6px;margin-bottom:6px;align-items:center">' +
-              '<input type="text" placeholder="Sector · Ej: C114" value="'+escapeHtml(s.sector||'')+'" ' +
+              '<input type="text" placeholder="Sector" value="'+escapeHtml(s.sector||'')+'" ' +
                 'onchange="saveTicketSeat('+ev.id+','+si+',\'sector\',this.value)" ' +
-                'style="flex:1;border:1.5px solid #d1d5db;border-radius:8px;padding:7px 10px;font-size:13px">' +
-              '<input type="text" placeholder="Butaca · Ej: F22" value="'+escapeHtml(s.seat||'')+'" ' +
+                'style="flex:1;min-width:0;border:1.5px solid #d1d5db;border-radius:8px;padding:7px 8px;font-size:13px">' +
+              '<input type="text" placeholder="Butaca" value="'+escapeHtml(s.seat||'')+'" ' +
                 'onchange="saveTicketSeat('+ev.id+','+si+',\'seat\',this.value)" ' +
-                'style="flex:1;border:1.5px solid #d1d5db;border-radius:8px;padding:7px 10px;font-size:13px">' +
-              (seats.length > 1 ? '<button onclick="removeTicketSeat('+ev.id+','+si+')" style="min-width:36px;height:36px;background:#fee2e2;border:none;border-radius:8px;font-size:16px;cursor:pointer;color:#ef4444;flex-shrink:0;display:flex;align-items:center;justify-content:center">✕</button>' : '<span style="min-width:36px;flex-shrink:0"></span>') +
+                'style="flex:1;min-width:0;border:1.5px solid #d1d5db;border-radius:8px;padding:7px 8px;font-size:13px">' +
+              (seats.length > 1 ? '<button onclick="removeTicketSeat('+ev.id+','+si+')" style="width:36px;height:36px;min-width:36px;background:#fee2e2;border:none;border-radius:8px;font-size:16px;cursor:pointer;color:#ef4444;flex-shrink:0">✕</button>' : '<span style="width:36px;min-width:36px;flex-shrink:0"></span>') +
             '</div>';
           });
           return '<div style="padding:0 14px 14px;border-top:1px solid #bbf7d0;padding-top:10px">' +
