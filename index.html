@@ -1946,7 +1946,7 @@ var DEFAULT_CONFIG = {
     { mode: 'bus',  label: 'Bus charter → AT&T Stadium',  durationMin: 10 }
   ]},
   alerts: [{ id: 1, type: 'info', title: 'Servicio especial días de partido', message: 'TRE con frecuencia aumentada (cada 15 min) en días de partido del Mundial.', active: true }],
-  transit: { sectionTitle: '🎟 Tickets GoPass', warning: '⚠️ Comprar ANTES de subir.', tickets: [{ name: 'TRE Regional Day Pass — $9.00', description: 'Cubre DART + TRE ida y vuelta.', recommended: true }], appStore: 'https://www.dart.org/fares/gopass', googlePlay: 'https://www.dart.org/fares/gopass', note: '🚌 Bus charter gratuito con ticket oficial.' }
+  transit: { sectionTitle: '🎟 Tickets GoPass', warning: '⚠️ Comprar ANTES de subir al tren.', tickets: [{ name: 'TRE Regional Day Pass — $9.00', description: 'Cubre DART + TRE ida y vuelta. Compralo en la máquina de la estación (efectivo o tarjeta) o en el sitio web de DART.', recommended: true }], appStore: 'https://www.dart.org/fares/gopass', googlePlay: 'https://www.dart.org/fares/gopass', note: '💳 Alternativas: máquinas en la estación (efectivo/tarjeta) · sitio web dart.org · la app GoPass si tenés Apple ID de EE.UU.' }
 };
 
 // ============================================================
@@ -3876,7 +3876,8 @@ function renderTransit() {
   });
   if (t.appStore||t.googlePlay) {
     html += '<div class="store-btns">';
-    if (t.appStore)    html += '<button onclick="window.open(\''+t.appStore+'\',\'_blank\')" class="store-btn" style="flex:1">🌐 Comprar GoPass (DART)</button>';
+    html += '<button onclick="window.location.href=\'https://apps.apple.com/us/app/gopass/id490474238\'" class="store-btn" style="flex:1">🍎 GoPass — App Store</button>';
+    html += '<button onclick="window.location.href=\'https://play.google.com/store/apps/details?id=com.ridescout.android.gopass\'" class="store-btn" style="flex:1">🤖 GoPass — Google Play</button>';
     html += '</div>';
   }
   if (t.note) html += '<p class="info-note" style="margin-top:10px">'+escapeHtml(t.note)+'</p>';
