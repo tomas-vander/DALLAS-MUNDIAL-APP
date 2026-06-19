@@ -1946,7 +1946,7 @@ var DEFAULT_CONFIG = {
     { mode: 'bus',  label: 'Bus charter → AT&T Stadium',  durationMin: 10 }
   ]},
   alerts: [{ id: 1, type: 'info', title: 'Servicio especial días de partido', message: 'TRE con frecuencia aumentada (cada 15 min) en días de partido del Mundial.', active: true }],
-  transit: { sectionTitle: '🎟 Tickets GoPass', warning: '⚠️ Comprar ANTES de subir.', tickets: [{ name: 'TRE Regional Day Pass — $9.00', description: 'Cubre DART + TRE ida y vuelta.', recommended: true }], appStore: 'https://apps.apple.com/us/app/gopass/id490474238', googlePlay: 'https://play.google.com/store/apps/details?id=com.ridescout.android.gopass', note: '🚌 Bus charter gratuito con ticket oficial.' }
+  transit: { sectionTitle: '🎟 Tickets GoPass', warning: '⚠️ Comprar ANTES de subir.', tickets: [{ name: 'TRE Regional Day Pass — $9.00', description: 'Cubre DART + TRE ida y vuelta.', recommended: true }], appStore: 'https://www.dart.org/fares/gopass', googlePlay: 'https://www.dart.org/fares/gopass', note: '🚌 Bus charter gratuito con ticket oficial.' }
 };
 
 // ============================================================
@@ -3876,8 +3876,7 @@ function renderTransit() {
   });
   if (t.appStore||t.googlePlay) {
     html += '<div class="store-btns">';
-    if (t.appStore)    html += '<button onclick="window.open(\''+t.appStore+'\',\'_blank\')" class="store-btn">🍎 App Store</button>';
-    if (t.googlePlay)  html += '<button onclick="window.open(\''+t.googlePlay+'\',\'_blank\')" class="store-btn">🤖 Google Play</button>';
+    if (t.appStore)    html += '<button onclick="window.open(\''+t.appStore+'\',\'_blank\')" class="store-btn" style="flex:1">🌐 Comprar GoPass (DART)</button>';
     html += '</div>';
   }
   if (t.note) html += '<p class="info-note" style="margin-top:10px">'+escapeHtml(t.note)+'</p>';
@@ -5112,11 +5111,19 @@ function closeDocViewer() {
 function shareDocViewer() {
   var doc = _viewerDocIdx !== null ? getScanDocs()[_viewerDocIdx] : null;
   if (!doc) return;
+  // Compartir texto QR
   if (doc.qr && navigator.share) {
     navigator.share({ title: doc.name, text: doc.qr }).catch(function(){});
-  } else if (doc.img) {
-    // Abrir imagen en pestaña para poder compartir/descargar
-    window.open(doc.img, '_blank');
+    return;
+  }
+  // Descargar imagen con <a download> — único método que funciona en Safari/PWA
+  if (doc.img) {
+    var a = document.createElement('a');
+    a.href = doc.img;
+    a.download = (doc.name || 'documento') + '.jpg';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 }
 
