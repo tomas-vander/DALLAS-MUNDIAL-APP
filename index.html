@@ -1647,6 +1647,16 @@
         </div>
       </div>
 
+      <!-- Modal visor de documentos (reemplaza window.open) -->
+      <div id="doc-viewer-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9999;flex-direction:column">
+        <div style="display:flex;align-items:center;padding:12px 16px;gap:12px">
+          <button onclick="closeDocViewer()" style="background:rgba(255,255,255,0.15);border:none;border-radius:10px;color:white;font-size:22px;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+          <div id="doc-viewer-title" style="color:white;font-weight:700;font-size:15px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div>
+          <button onclick="shareDocViewer()" style="background:rgba(255,255,255,0.15);border:none;border-radius:10px;color:white;font-size:18px;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center">⬆️</button>
+        </div>
+        <div id="doc-viewer-body" style="flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px"></div>
+      </div>
+
       <div class="info-section" style="padding:0;overflow:hidden">
         <div class="checklist-header">
           <div class="section-title" style="margin:0">🗂 Documentos guardados</div>
@@ -3866,8 +3876,8 @@ function renderTransit() {
   });
   if (t.appStore||t.googlePlay) {
     html += '<div class="store-btns">';
-    if (t.appStore)    html += '<a href="'+t.appStore+'"    class="store-btn" target="_blank">🍎 App Store</a>';
-    if (t.googlePlay)  html += '<a href="'+t.googlePlay+'"  class="store-btn" target="_blank">🤖 Google Play</a>';
+    if (t.appStore)    html += '<button onclick="window.open(\''+t.appStore+'\',\'_blank\')" class="store-btn">🍎 App Store</button>';
+    if (t.googlePlay)  html += '<button onclick="window.open(\''+t.googlePlay+'\',\'_blank\')" class="store-btn">🤖 Google Play</button>';
     html += '</div>';
   }
   if (t.note) html += '<p class="info-note" style="margin-top:10px">'+escapeHtml(t.note)+'</p>';
@@ -5072,13 +5082,41 @@ function renderScanList() {
   el.innerHTML = html;
 }
 
+var _viewerDocIdx = null;
 function verDocumento(idx) {
   var doc = getScanDocs()[idx]; if (!doc) return;
-  var w = window.open('', '_blank');
+  _viewerDocIdx = idx;
+  var modal = document.getElementById('doc-viewer-modal');
+  var title = document.getElementById('doc-viewer-title');
+  var body  = document.getElementById('doc-viewer-body');
+  title.textContent = doc.name || 'Documento';
   if (doc.qr) {
-    w.document.write('<html><body style="margin:0;font-family:sans-serif;padding:24px;background:#f0fdf4"><h2 style="color:#059669">📲 Código QR / Barcode</h2><p style="font-size:22px;word-break:break-all">' + doc.qr.replace(/</g,'&lt;') + '</p>' + (doc.img ? '<img src="'+doc.img+'" style="max-width:100%;margin-top:16px;border-radius:8px">' : '') + '</body></html>');
+    body.innerHTML = '<div style="background:#f0fdf4;border-radius:14px;padding:20px;max-width:340px;text-align:center">' +
+      '<div style="font-size:48px;margin-bottom:12px">📲</div>' +
+      '<div style="font-size:13px;color:#6b7280;margin-bottom:8px;font-weight:600">Código detectado</div>' +
+      '<div style="font-size:17px;font-weight:700;color:#059669;word-break:break-all;margin-bottom:16px">' + escapeHtml(doc.qr) + '</div>' +
+      (doc.img ? '<img src="'+doc.img+'" style="max-width:100%;border-radius:10px;margin-top:8px">' : '') +
+    '</div>';
   } else {
-    w.document.write('<html><body style="margin:0;background:#000"><img src="'+doc.img+'" style="max-width:100%;display:block;margin:auto"></body></html>');
+    body.innerHTML = '<img src="'+doc.img+'" style="max-width:100%;max-height:calc(100vh - 80px);object-fit:contain;border-radius:8px">';
+  }
+  modal.style.display = 'flex';
+}
+
+function closeDocViewer() {
+  var modal = document.getElementById('doc-viewer-modal');
+  if (modal) modal.style.display = 'none';
+  _viewerDocIdx = null;
+}
+
+function shareDocViewer() {
+  var doc = _viewerDocIdx !== null ? getScanDocs()[_viewerDocIdx] : null;
+  if (!doc) return;
+  if (doc.qr && navigator.share) {
+    navigator.share({ title: doc.name, text: doc.qr }).catch(function(){});
+  } else if (doc.img) {
+    // Abrir imagen en pestaña para poder compartir/descargar
+    window.open(doc.img, '_blank');
   }
 }
 
